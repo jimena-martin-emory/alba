@@ -489,7 +489,7 @@ let workDate = dateStr(new Date());
 let logs = [], behaviors = {justin:0,alba:0}, overrides = {};
 let activeEmo = null, activeInt = null, rptChart = null;
 
-function dateStr(d){ return d.toISOString().split('T')[0]; }
+function dateStr(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function isToday(){ return workDate===dateStr(new Date()); }
 function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
 function fmtLong(str){ return new Date(str+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}); }
