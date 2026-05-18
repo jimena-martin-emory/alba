@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Alba">
+  <meta name="theme-color" content="#F7C59F">
+  <title>Alba — Registro Emocional</title>
+
+  <!-- App icon inline SVG converted to data URI for apple-touch-icon -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' rx='44' fill='%23FCEBD4'/%3E%3Crect y='0' width='200' height='55' rx='0' fill='%23F7C59F'/%3E%3Crect y='55' width='200' height='50' fill='%23F4956A'/%3E%3Crect y='105' width='200' height='45' fill='%23E86848'/%3E%3Crect y='150' width='200' height='50' fill='%233d1c08'/%3E%3Cellipse cx='100' cy='150' rx='40' ry='40' fill='%23F9E04B' opacity='.25'/%3E%3Cellipse cx='100' cy='150' rx='26' ry='26' fill='%23F5C030' opacity='.55'/%3E%3Cellipse cx='100' cy='150' rx='15' ry='15' fill='%23F9E04B'/%3E%3Cline x1='0' y1='150' x2='200' y2='150' stroke='%23C84020' stroke-width='3'/%3E%3Crect y='158' width='200' height='42' fill='%233d1c08'/%3E%3Ctext x='100' y='188' text-anchor='middle' font-family='system-ui' font-size='22' font-weight='600' letter-spacing='4' fill='%23FCEBD4'%3EALBA%3C/text%3E%3C/svg%3E">
+
+  <style>
+    :root {
+      --orange-light: #FCEBD4;
+      --orange-mid:   #F7C59F;
+      --orange:       #F4956A;
+      --orange-dark:  #E86848;
+      --ground:       #3d1c08;
+      --sun:          #F9E04B;
+      --horizon:      #C84020;
+      --text-dark:    #3d1c00;
+      --text-mid:     #7a3a10;
+      --text-light:   #FCEBD4;
+
+      --bg:           #faf7f4;
+      --bg2:          #f2ede8;
+      --bg3:          #e8e0d8;
+      --card:         #ffffff;
+      --border:       rgba(61,28,0,0.12);
+      --border2:      rgba(61,28,0,0.22);
+      --text:         #2a1400;
+      --text2:        #7a5a40;
+      --text3:        #b09070;
+      --radius:       14px;
+      --radius-sm:    8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:    #1a1008;
+        --bg2:   #261808;
+        --bg3:   #321e0a;
+        --card:  #2a1a08;
+        --border: rgba(250,200,150,0.12);
+        --border2: rgba(250,200,150,0.22);
+        --text:  #faf0e0;
+        --text2: #c8a070;
+        --text3: #886040;
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(180deg, #F7C59F 0%, #F4956A 55%, #E86848 100%);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-inner {
+      padding: 16px 20px 14px;
+      padding-top: calc(16px + env(safe-area-inset-top));
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .header-icon {
+      width: 42px; height: 42px;
+      background: #3d1c08;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-icon svg { width: 42px; height: 42px; }
+    .header-title { font-size: 22px; font-weight: 600; color: #3d1c00; letter-spacing: 0.5px; }
+    .header-sub { font-size: 12px; color: #7a3a10; letter-spacing: 0.5px; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .tab {
+      flex: 1;
+      padding: 12px 4px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text2);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all .15s;
+    }
+    .tab.active { color: var(--orange-dark); border-bottom-color: var(--orange-dark); }
+    .tab-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+
+    /* ── VIEWS ── */
+    .view { display: none; padding: 16px; }
+    .view.active { display: block; }
+
+    /* ── SUBTABS ── */
+    .subtabs { display: flex; gap: 6px; margin-bottom: 16px; }
+    .subtab {
+      flex: 1; padding: 9px 4px; text-align: center; font-size: 12px; font-weight: 500;
+      cursor: pointer; border-radius: var(--radius-sm); border: 1px solid var(--border);
+      color: var(--text2); background: transparent; transition: all .15s;
+    }
+    .subtab.active { border-color: var(--orange-dark); color: var(--orange-dark); background: var(--bg2); }
+    .subview { display: none; } .subview.active { display: block; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .card-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .card-sub { font-size: 12px; color: var(--text2); }
+
+    /* ── DATE BAR ── */
+    .date-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px; margin-bottom: 16px;
+    }
+    .date-bar label { font-size: 13px; color: var(--text2); white-space: nowrap; }
+    .date-bar input[type=date] {
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 6px 8px; font-size: 13px; font-family: inherit;
+      background: var(--bg); color: var(--text); flex: 1;
+    }
+    .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; white-space: nowrap; }
+    .badge-today { background: #EAF3DE; color: #3B6D11; }
+    .badge-past  { background: #FAEEDA; color: #854F0B; }
+
+    /* ── BANNER ── */
+    .banner { font-size: 12px; border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 14px; display: none; align-items: flex-start; gap: 8px; }
+    .banner.show { display: flex; }
+    .banner-warn { color: #854F0B; background: #FAEEDA; }
+
+    /* ── SECTION LABEL ── */
+    .section-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; margin-top: 4px; }
+
+    /* ── EMOTION GRID ── */
+    .emo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    .emo-btn {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 12px; cursor: pointer;
+      text-align: center; transition: transform .1s; user-select: none; -webkit-user-select: none;
+      active: scale(.96);
+    }
+    .emo-btn:active { transform: scale(.96); }
+    .emo-btn .emo-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .emo-btn .emo-count { font-size: 11px; color: var(--text2); }
+
+    /* ── INTENSITY PANEL ── */
+    .int-panel {
+      background: var(--card); border: 1px solid var(--border2);
+      border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
+    }
+    .int-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
+    .int-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .int-btn {
+      flex: 1; padding: 12px 4px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: var(--bg2);
+      font-size: 16px; font-weight: 600; cursor: pointer; color: var(--text2); text-align: center;
+      transition: all .1s;
+    }
+    .int-btn.sel { color: white; border-color: transparent; }
+    textarea.note-area {
+      width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 10px 12px; font-size: 14px; font-family: inherit;
+      color: var(--text); background: var(--bg); resize: none; height: 70px; margin-bottom: 12px;
+    }
+    textarea.note-area:focus { outline: none; border-color: var(--orange); }
+    .btn-row { display: flex; gap: 8px; }
+    .btn-confirm {
+      flex: 2; padding: 12px; border-radius: var(--radius-sm); border: none;
+      font-size: 15px; font-weight: 600; cursor: pointer; color: white;
+    }
+    .btn-cancel {
+      flex: 1; padding: 12px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border2); background: transparent;
+      font-size: 15px; cursor: pointer; color: var(--text2);
+    }
+
+    /* ── LOG LIST ── */
+    .log-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: var(--radius-sm);
+      background: var(--bg2); margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .log-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .log-time { color: var(--text3); font-size: 11px; flex-shrink: 0; }
+    .log-name { font-weight: 600; color: var(--text); font-size: 14px; }
+    .log-int  { color: var(--text2); font-size: 12px; }
+    .log-note-text { color: var(--text2); font-size: 11px; font-style: italic; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .log-del  { margin-left: auto; cursor: pointer; color: var(--text3); flex-shrink: 0; font-size: 18px; padding: 4px; }
+
+    /* ── SUMMARY ── */
+    .sum-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+    .sum-name { font-size: 16px; font-weight: 600; }
+    .sum-badge { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+    .sum-detail { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+    .sum-notes  { font-size: 11px; color: var(--text2); font-style: italic; margin-bottom: 10px; }
+    .adj-row { display: flex; gap: 8px; align-items: center; }
+    .adj-label { font-size: 12px; color: var(--text2); }
+    .adj-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border2); background: transparent;
+      font-size: 18px; cursor: pointer; color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .adj-val { font-size: 16px; font-weight: 600; min-width: 24px; text-align: center; color: var(--text); }
+    .sum-empty {
+      background: var(--bg2); border: 1px dashed var(--border2);
+      border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    }
+    .btn-add {
+      font-size: 13px; padding: 7px 14px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border2); background: transparent;
+      cursor: pointer; color: var(--text2); white-space: nowrap;
+    }
+
+    /* ── SAVE BUTTON ── */
+    .save-btn {
+      width: 100%; padding: 15px; background: var(--bg2);
+      border: 1px solid var(--border2); border-radius: var(--radius);
+      font-size: 16px; font-weight: 600; color: var(--text);
+      cursor: pointer; transition: background .15s; margin-top: 8px;
+    }
+    .save-btn.saved { border-color: #3B6D11; color: #3B6D11; background: #EAF3DE; }
+
+    /* ── BEHAVIOR TAP ── */
+    .beh-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; }
+    .beh-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .beh-name { font-size: 16px; font-weight: 600; color: var(--text); }
+    .beh-desc { font-size: 12px; color: var(--text2); margin-top: 2px; }
+    .beh-count { font-size: 28px; font-weight: 700; min-width: 40px; text-align: right; }
+    .tap-btn {
+      width: 100%; padding: 16px; border-radius: var(--radius-sm); border: none;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: transform .08s, opacity .1s; user-select: none; -webkit-user-select: none;
+    }
+    .tap-btn:active { transform: scale(.96); opacity: .85; }
+    .tap-justin { background: #EEEDFE; color: #3C3489; }
+    .tap-alba   { background: #FAECE7; color: #712B13; }
+    .tap-dots { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; margin-bottom: 6px; }
+    .tap-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-justin { background: #7F77DD; } .dot-alba { background: #D85A30; }
+    .beh-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+    .link-sm { font-size: 13px; color: var(--text2); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 4px 0; }
+
+    /* ── HISTORIAL ── */
+    .hist-entry {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; cursor: pointer;
+    }
+    .hist-date { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+    .hist-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+    .chip { font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+    .c-gratitud{background:#EAF3DE;color:#2d5a0e;} .c-orgullo{background:#E6F1FB;color:#154d87;}
+    .c-autocompasion{background:#EEEDFE;color:#3d3496;} .c-tristeza{background:#E1F5EE;color:#0a5a42;}
+    .c-ansiedad{background:#FAEEDA;color:#6b3e08;} .c-culpa{background:#FBEAF0;color:#7a2644;}
+    .c-enfado{background:#FCEBEB;color:#822020;} .c-justin{background:#EEEDFE;color:#3d3496;}
+    .c-alba{background:#FAECE7;color:#712B13;}
+    .hist-notes { font-size: 12px; color: var(--text2); font-style: italic; margin-top: 4px; }
+    .hist-hint { font-size: 11px; color: var(--text3); margin-top: 6px; }
+    .empty { text-align: center; padding: 40px 20px; color: var(--text2); font-size: 15px; }
+
+    /* ── REPORT ── */
+    .rpt-controls { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .rpt-controls label { font-size: 13px; color: var(--text2); }
+    .rpt-controls input[type=date] {
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 8px; font-size: 13px; font-family: inherit;
+      background: var(--card); color: var(--text); flex: 1;
+    }
+    .send-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px;
+    }
+    .send-box-label { font-size: 12px; color: var(--text2); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .send-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .send-btn {
+      padding: 10px 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px; border: 1px solid;
+    }
+    .send-bev { background: #E6F1FB; color: #154d87; border-color: #B5D4F4; }
+    .send-me  { background: #EAF3DE; color: #2d5a0e; border-color: #C0DD97; }
+    .send-note { font-size: 11px; color: var(--text3); display: flex; align-items: flex-start; gap: 5px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+    .stat-val { font-size: 26px; font-weight: 700; color: var(--text); }
+    .stat-lbl { font-size: 11px; color: var(--text2); margin-top: 2px; }
+    .stat-grid-emo { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    .chart-wrap { position: relative; width: 100%; height: 220px; margin-bottom: 16px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .legend span { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text2); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+    .storage-note {
+      font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; background: var(--bg2); border-radius: var(--radius-sm); margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-icon">
+      <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+        <rect width="42" height="42" fill="#FCEBD4"/>
+        <rect width="42" height="11" fill="#F7C59F"/>
+        <rect y="11" width="42" height="11" fill="#F4956A"/>
+        <rect y="22" width="42" height="10" fill="#E86848"/>
+        <rect y="32" width="42" height="10" fill="#3d1c08"/>
+        <line x1="21" y1="32" x2="21" y2="6"  stroke="#F9E04B" stroke-width="1.5" stroke-dasharray="2 4" opacity=".7"/>
+        <line x1="21" y1="32" x2="6"  y2="14" stroke="#F9E04B" stroke-width="1"   stroke-dasharray="2 5" opacity=".5"/>
+        <line x1="21" y1="32" x2="36" y2="14" stroke="#F9E04B" stroke-width="1"   stroke-dasharray="2 5" opacity=".5"/>
+        <ellipse cx="21" cy="32" rx="9" ry="9" fill="#F9E04B" opacity=".25"/>
+        <ellipse cx="21" cy="32" rx="6" ry="6" fill="#F5C030" opacity=".55"/>
+        <ellipse cx="21" cy="32" rx="3.5" ry="3.5" fill="#F9E04B"/>
+        <line x1="0" y1="32" x2="42" y2="32" stroke="#C84020" stroke-width="2"/>
+      </svg>
+    </div>
+    <div>
+      <div class="header-title">Alba</div>
+      <div class="header-sub">registro emocional</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('registrar')">
+    <span class="tab-icon">✦</span>Registrar
+  </div>
+  <div class="tab" onclick="switchTab('historial')">
+    <span class="tab-icon">≡</span>Historial
+  </div>
+  <div class="tab" onclick="switchTab('reporte')">
+    <span class="tab-icon">◎</span>Reporte
+  </div>
+</div>
+
+<!-- REGISTRAR -->
+<div id="view-registrar" class="view active">
+  <div class="storage-note">🔒 Los datos se guardan solo en este dispositivo.</div>
+
+  <div class="date-bar">
+    <label>📅 Fecha</label>
+    <input type="date" id="working-date" onchange="onDateChange()">
+    <span id="date-badge" class="badge badge-today">Hoy</span>
+  </div>
+
+  <div class="subtabs">
+    <div class="subtab active" onclick="switchSub('rapido')">⚡ Rápido</div>
+    <div class="subtab" onclick="switchSub('resumen')">☀ Resumen</div>
+    <div class="subtab" onclick="switchSub('comportamiento')">↯ Comportamientos</div>
+  </div>
+
+  <!-- Registro rápido -->
+  <div id="sub-rapido" class="subview active">
+    <div id="banner" class="banner banner-warn"><span>⚠</span><span id="banner-text"></span></div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Toca la emoción que sientes ahora.</p>
+    <div class="emo-grid" id="quick-grid"></div>
+    <div id="int-panel" style="display:none"></div>
+    <div id="log-wrap" style="display:none">
+      <div class="section-label">Registros del día</div>
+      <div id="log-list"></div>
+    </div>
+  </div>
+
+  <!-- Resumen -->
+  <div id="sub-resumen" class="subview">
+    <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Revisa los promedios, ajusta si quieres, y guarda.</p>
+    <div id="sum-list"></div>
+    <div style="margin-top:14px;margin-bottom:8px;">
+      <div class="section-label">Comportamientos de hoy</div>
+      <div style="display:flex;gap:20px;font-size:15px;color:var(--text);">
+        <div>Disc. Justin: <strong id="sum-justin">0</strong></div>
+        <div>Voz Alba: <strong id="sum-alba">0</strong></div>
+      </div>
+    </div>
+    <button class="save-btn" id="save-btn" onclick="saveEntry()">💾 Guardar registro</button>
+  </div>
+
+  <!-- Comportamientos -->
+  <div id="sub-comportamiento" class="subview">
+    <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Toca cada vez que ocurra.</p>
+    <div class="beh-card">
+      <div class="beh-top">
+        <div><div class="beh-name">Discusión con Justin</div><div class="beh-desc">Toca cada vez que suceda</div></div>
+        <div class="beh-count" id="badge-justin" style="color:#534AB7">0</div>
+      </div>
+      <button class="tap-btn tap-justin" id="tapbtn-justin" onclick="tap('justin')">👆 Ocurrió ahora</button>
+      <div class="tap-dots" id="dots-justin"></div>
+      <div class="beh-footer">
+        <span class="link-sm" onclick="toggleNote('justin')">💬 Añadir nota</span>
+        <span class="link-sm" onclick="undoTap('justin')">↩ Deshacer</span>
+      </div>
+      <textarea class="note-area" id="note-justin" placeholder="¿Qué lo desencadenó?" style="display:none;margin-top:10px;"></textarea>
+    </div>
+    <div class="beh-card">
+      <div class="beh-top">
+        <div><div class="beh-name">Levantar la voz a Alba</div><div class="beh-desc">Toca cada vez que suceda</div></div>
+        <div class="beh-count" id="badge-alba" style="color:#993C1D">0</div>
+      </div>
+      <button class="tap-btn tap-alba" id="tapbtn-alba" onclick="tap('alba')">👆 Ocurrió ahora</button>
+      <div class="tap-dots" id="dots-alba"></div>
+      <div class="beh-footer">
+        <span class="link-sm" onclick="toggleNote('alba')">💬 Añadir nota</span>
+        <span class="link-sm" onclick="undoTap('alba')">↩ Deshacer</span>
+      </div>
+      <textarea class="note-area" id="note-alba" placeholder="¿Qué lo desencadenó?" style="display:none;margin-top:10px;"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORIAL -->
+<div id="view-historial" class="view">
+  <div id="hist-content"><div class="empty">Aún no hay registros.<br>¡Empieza hoy!</div></div>
+</div>
+
+<!-- REPORTE -->
+<div id="view-reporte" class="view">
+  <div class="rpt-controls">
+    <label>Desde</label>
+    <input type="date" id="date-from" onchange="renderReport()">
+    <label>Hasta</label>
+    <input type="date" id="date-to" onchange="renderReport()">
+  </div>
+  <div class="send-box">
+    <div class="send-box-label">✉ Compartir por correo — resumen + tabla completa</div>
+    <div class="send-btns">
+      <button class="send-btn send-bev" onclick="openMail('bev')">⚕ Enviar a Bev</button>
+      <button class="send-btn send-me"  onclick="openMail('me')">👤 Enviarme a mí</button>
+    </div>
+    <div class="send-note">ℹ El email incluye resumen y tabla día a día. No necesitas adjuntar nada.</div>
+  </div>
+  <div id="rpt-content"><div class="empty">Selecciona un rango para ver el reporte.</div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const STORAGE_KEY = 'emo_tracker_v1';
+let entries = [];
+try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); } catch(e) {}
+
+const EMOTIONS = [
+  {key:'gratitud',      label:'Gratitud',      color:'#2d5a0e', bg:'#EAF3DE', dot:'#639922'},
+  {key:'orgullo',       label:'Orgullo',        color:'#154d87', bg:'#E6F1FB', dot:'#378ADD'},
+  {key:'autocompasion', label:'Autocompasión',  color:'#3d3496', bg:'#EEEDFE', dot:'#7F77DD'},
+  {key:'tristeza',      label:'Tristeza',       color:'#0a5a42', bg:'#E1F5EE', dot:'#1D9E75'},
+  {key:'ansiedad',      label:'Ansiedad',       color:'#6b3e08', bg:'#FAEEDA', dot:'#EF9F27'},
+  {key:'culpa',         label:'Culpa',          color:'#7a2644', bg:'#FBEAF0', dot:'#D4537E'},
+  {key:'enfado',        label:'Enfado',         color:'#822020', bg:'#FCEBEB', dot:'#E24B4A'},
+];
+const EMO = Object.fromEntries(EMOTIONS.map(e=>[e.key,e]));
+const BEHAVIORS = [{key:'justin',label:'Discusión con Justin'},{key:'alba',label:'Voz alta a Alba'}];
+
+let workDate = dateStr(new Date());
+let logs = [], behaviors = {justin:0,alba:0}, overrides = {};
+let activeEmo = null, activeInt = null, rptChart = null;
+
+function dateStr(d){ return d.toISOString().split('T')[0]; }
+function isToday(){ return workDate===dateStr(new Date()); }
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function fmtLong(str){ return new Date(str+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}); }
+function fmtShort(str){ return new Date(str+'T12:00:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'}); }
+function fmtTime(){ return new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}); }
+function avgArr(arr){ return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:null; }
+
+function calcStats(filtered){
+  const totals=Object.fromEntries(BEHAVIORS.map(b=>[b.key,0]));
+  const emoVals=Object.fromEntries(EMOTIONS.map(e=>[e.key,[]]));
+  filtered.forEach(entry=>{
+    BEHAVIORS.forEach(b=>{totals[b.key]+=(entry.behaviors?.[b.key]||0);});
+    EMOTIONS.forEach(e=>{if(entry.emotions?.[e.key]!=null) emoVals[e.key].push(entry.emotions[e.key]);});
+  });
+  return{totals,emoVals};
+}
+
+function getLogAvg(key){ return avgArr(logs.filter(l=>l.emotion===key).map(l=>l.intensity)); }
+function getFinal(key){
+  if(overrides[key]!=null) return overrides[key];
+  const a=getLogAvg(key); return a!=null?Math.round(a):null;
+}
+
+function persist(){
+  entries.sort((a,b)=>a.date>b.date?-1:1);
+  try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(entries)); }catch(e){}
+}
+
+function loadDay(d){
+  logs=[]; behaviors={justin:0,alba:0}; overrides={};
+  activeEmo=null; activeInt=null;
+  const ex=entries.find(e=>e.date===d);
+  if(ex){
+    logs=ex.logs?[...ex.logs]:[];
+    behaviors={...(ex.behaviors||behaviors)};
+    if(!logs.length&&ex.emotions) Object.entries(ex.emotions).forEach(([k,v])=>{overrides[k]=v;});
+    BEHAVIORS.forEach(b=>{const el=document.getElementById('note-'+b.key);if(el)el.value=ex.comments?.[b.key]||'';});
+    showBanner(`Registro del ${fmtLong(d)} cargado — edítalo y vuelve a guardar.`);
+  } else { hideBanner(); }
+  BEHAVIORS.forEach(b=>refreshTapUI(b.key));
+  document.getElementById('int-panel').style.display='none';
+  renderQuickGrid(); renderLogList();
+}
+
+function saveEntry(){
+  const emotions=Object.fromEntries(EMOTIONS.map(e=>[e.key,getFinal(e.key)]).filter(([,v])=>v!=null));
+  const comments={},notesByEmo={};
+  logs.forEach(l=>{if(l.note){(notesByEmo[l.emotion]=notesByEmo[l.emotion]||[]).push(l.note);}});
+  Object.entries(notesByEmo).forEach(([k,arr])=>{comments[k]=arr.join(' / ');});
+  BEHAVIORS.forEach(b=>{const el=document.getElementById('note-'+b.key);if(el&&el.value.trim())comments[b.key]=el.value.trim();});
+  const entry={date:workDate,ts:new Date().toISOString(),emotions,behaviors:{...behaviors},comments,logs:[...logs]};
+  const idx=entries.findIndex(e=>e.date===workDate);
+  if(idx>=0)entries[idx]=entry;else entries.push(entry);
+  persist();
+  const btn=document.getElementById('save-btn');
+  btn.classList.add('saved');btn.innerHTML='✓ Guardado';
+  setTimeout(()=>{btn.classList.remove('saved');btn.innerHTML='💾 Guardar registro';},2500);
+  showBanner(`Registro del ${fmtLong(workDate)} guardado correctamente.`);
+}
+
+function showBanner(txt){const b=document.getElementById('banner');b.classList.add('show');document.getElementById('banner-text').textContent=txt;}
+function hideBanner(){document.getElementById('banner').classList.remove('show');}
+
+function switchTab(tab){
+  ['registrar','historial','reporte'].forEach((t,i)=>{
+    document.querySelectorAll('.tab')[i].classList.toggle('active',t===tab);
+    document.getElementById('view-'+t).classList.toggle('active',t===tab);
+  });
+  if(tab==='historial')renderHistorial();
+  if(tab==='reporte')renderReport();
+}
+
+function switchSub(sub){
+  ['rapido','resumen','comportamiento'].forEach((s,i)=>{
+    document.querySelectorAll('.subtab')[i].classList.toggle('active',s===sub);
+    document.getElementById('sub-'+s).classList.toggle('active',s===sub);
+  });
+  if(sub==='resumen')renderSummary();
+}
+
+function initDate(){
+  const el=document.getElementById('working-date');
+  el.value=workDate;el.max=dateStr(new Date());updateDateBadge();
+}
+function onDateChange(){
+  workDate=document.getElementById('working-date').value;
+  updateDateBadge();loadDay(workDate);
+}
+function updateDateBadge(){
+  const b=document.getElementById('date-badge');
+  b.className=isToday()?'badge badge-today':'badge badge-past';
+  b.textContent=isToday()?'Hoy':'Día anterior';
+}
+
+function renderQuickGrid(){
+  document.getElementById('quick-grid').innerHTML=EMOTIONS.map(e=>{
+    const n=logs.filter(l=>l.emotion===e.key).length;
+    return `<button class="emo-btn" onclick="selectEmo('${e.key}')" style="border-color:${n>0?e.dot:''}">
+      <div class="emo-name" style="color:${e.color}">${e.label}</div>
+      <div class="emo-count">${n>0?n+' registro'+(n>1?'s':''):'Toca para registrar'}</div>
+    </button>`;
+  }).join('');
+}
+
+function selectEmo(key){activeEmo=key;activeInt=null;renderIntPanel();}
+function renderIntPanel(){
+  const panel=document.getElementById('int-panel'),e=EMO[activeEmo];
+  if(!e){panel.style.display='none';return;}
+  panel.style.display='block';
+  panel.innerHTML=`<div class="int-panel">
+    <div class="int-title">¿Con qué intensidad sientes <span style="color:${e.color}">${e.label}</span>?</div>
+    <div class="int-row">${[1,2,3,4,5].map(v=>`
+      <button class="int-btn${activeInt===v?' sel':''}" onclick="selectInt(${v})"
+        style="${activeInt===v?'background:'+e.dot+';color:white;':''}">${v}</button>`).join('')}
+    </div>
+    <textarea class="note-area" id="quick-note" placeholder="Nota opcional — ¿qué lo provocó?"></textarea>
+    <div class="btn-row">
+      <button class="btn-confirm" style="background:${e.dot}" onclick="confirmEmo()">✓ Guardar</button>
+      <button class="btn-cancel" onclick="cancelInt()">Cancelar</button>
+    </div>
+  </div>`;
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function selectInt(v){activeInt=v;renderIntPanel();}
+function confirmEmo(){
+  if(!activeInt){alert('Selecciona una intensidad (1–5).');return;}
+  const note=document.getElementById('quick-note')?.value.trim()||'';
+  logs.push({emotion:activeEmo,intensity:activeInt,note,time:isToday()?fmtTime():fmtLong(workDate)});
+  activeEmo=null;activeInt=null;
+  document.getElementById('int-panel').style.display='none';
+  renderQuickGrid();renderLogList();
+}
+function cancelInt(){activeEmo=null;activeInt=null;document.getElementById('int-panel').style.display='none';}
+
+function renderLogList(){
+  const wrap=document.getElementById('log-wrap');
+  if(!logs.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  document.getElementById('log-list').innerHTML=[...logs].reverse().map((l,ri)=>{
+    const i=logs.length-1-ri,e=EMO[l.emotion];
+    return `<div class="log-item">
+      <div class="log-dot" style="background:${e.dot}"></div>
+      <span class="log-time">${l.time}</span>
+      <span class="log-name">${e.label}</span>
+      <span class="log-int">${l.intensity}/5</span>
+      ${l.note?`<span class="log-note-text">${l.note}</span>`:''}
+      <span class="log-del" onclick="deleteLog(${i})">✕</span>
+    </div>`;
+  }).join('');
+}
+function deleteLog(i){logs.splice(i,1);renderQuickGrid();renderLogList();}
+
+function renderSummary(){
+  document.getElementById('sum-justin').textContent=behaviors.justin||0;
+  document.getElementById('sum-alba').textContent=behaviors.alba||0;
+  document.getElementById('sum-list').innerHTML=EMOTIONS.map(e=>{
+    const eLogs=logs.filter(l=>l.emotion===e.key),avg=getLogAvg(e.key),final=getFinal(e.key);
+    if(eLogs.length){
+      const notes=eLogs.filter(l=>l.note).map(l=>`${l.time}: ${l.note}`).join(' · ');
+      return `<div class="card">
+        <div class="sum-header">
+          <div class="sum-name" style="color:${e.color}">${e.label}</div>
+          <div class="sum-badge" style="background:${e.bg};color:${e.color}">Prom. ${avg.toFixed(1)} → ${final}/5</div>
+        </div>
+        <div class="sum-detail">${eLogs.length} registro${eLogs.length>1?'s':''} · ${eLogs.map(l=>`${l.time} (${l.intensity})`).join(', ')}</div>
+        ${notes?`<div class="sum-notes">${notes}</div>`:''}
+        <div class="adj-row">
+          <span class="adj-label">Ajustar:</span>
+          <button class="adj-btn" onclick="adjust('${e.key}',-1)">−</button>
+          <span class="adj-val" id="adj-${e.key}">${final}</span>
+          <button class="adj-btn" onclick="adjust('${e.key}',1)">+</button>
+        </div>
+      </div>`;
+    } else {
+      const mv=overrides[e.key];
+      return `<div class="sum-empty">
+        <div>
+          <div style="font-size:15px;font-weight:600;color:${e.color}">${e.label}</div>
+          <div style="font-size:12px;color:var(--text2)">Sin registros</div>
+        </div>
+        ${mv!=null
+          ?`<div class="adj-row" style="gap:8px">
+              <button class="adj-btn" onclick="adjust('${e.key}',-1)">−</button>
+              <span class="adj-val" id="adj-${e.key}">${mv}</span>
+              <button class="adj-btn" onclick="adjust('${e.key}',1)">+</button>
+              <span onclick="clearAdj('${e.key}')" style="font-size:12px;color:var(--text3);cursor:pointer;margin-left:6px;">Quitar</span>
+            </div>`
+          :`<button class="btn-add" onclick="addAdj('${e.key}')">+ Añadir</button>`}
+      </div>`;
+    }
+  }).join('');
+}
+function adjust(key,d){overrides[key]=Math.min(5,Math.max(1,(getFinal(key)||3)+d));renderSummary();}
+function clearAdj(key){delete overrides[key];renderSummary();}
+function addAdj(key){overrides[key]=3;renderSummary();}
+
+function tap(key){
+  behaviors[key]=(behaviors[key]||0)+1;refreshTapUI(key);
+  const b=document.getElementById('tapbtn-'+key);b.style.opacity='.6';setTimeout(()=>b.style.opacity='1',150);
+}
+function undoTap(key){if(behaviors[key]>0){behaviors[key]--;refreshTapUI(key);}}
+function refreshTapUI(key){
+  const n=behaviors[key]||0;
+  document.getElementById('badge-'+key).textContent=n;
+  document.getElementById('dots-'+key).innerHTML=Array.from({length:n},()=>`<div class="tap-dot dot-${key}"></div>`).join('');
+}
+function toggleNote(key){const el=document.getElementById('note-'+key);el.style.display=el.style.display==='none'?'block':'none';}
+
+function renderHistorial(){
+  const el=document.getElementById('hist-content');
+  if(!entries.length){el.innerHTML='<div class="empty">Aún no hay registros.<br>¡Empieza hoy!</div>';return;}
+  el.innerHTML=entries.slice(0,60).map(e=>{
+    const ds=new Date(e.date+'T12:00:00').toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+    let chips=EMOTIONS.filter(em=>e.emotions?.[em.key]).map(em=>`<span class="chip c-${em.key}">${em.label} ${e.emotions[em.key]}/5</span>`).join('');
+    if(e.behaviors?.justin)chips+=`<span class="chip c-justin">Disc. Justin ×${e.behaviors.justin}</span>`;
+    if(e.behaviors?.alba)chips+=`<span class="chip c-alba">Voz Alba ×${e.behaviors.alba}</span>`;
+    const notes=Object.entries(e.comments||{}).map(([k,v])=>`${cap(k)}: ${v}`).join(' · ');
+    return `<div class="hist-entry" onclick="editEntry('${e.date}')">
+      <div class="hist-date">${ds}</div>
+      <div class="hist-chips">${chips||'<span style="font-size:13px;color:var(--text2)">Sin datos</span>'}</div>
+      ${notes?`<div class="hist-notes">${notes}</div>`:''}
+      <div class="hist-hint">✎ Toca para editar</div>
+    </div>`;
+  }).join('');
+}
+function editEntry(d){
+  document.getElementById('working-date').value=d;workDate=d;
+  updateDateBadge();loadDay(d);switchTab('registrar');switchSub('rapido');
+}
+
+function buildMail(from,to,filtered,forBev){
+  const{totals,emoVals}=calcStats(filtered);
+  const days=filtered.length;
+  const avg=arr=>{const a=avgArr(arr);return a!=null?a.toFixed(1):'-';};
+  const n=v=>(v!=null&&v!=='')?v:'-';
+  let b=forBev
+    ?`Hola Bev,%0A%0ATe comparto mi registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''} registrado${days!==1?'s':''}).%0A%0A`
+    :`Hola,%0A%0AAquí tienes tu registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''}).%0A%0A`;
+  b+=`════════════════════════════%0ARESUMEN DEL PERÍODO%0A════════════════════════════%0A%0AEMOCIONES (promedio de intensidad 1-5)%0A────────────────────────────%0A`;
+  EMOTIONS.forEach(e=>{b+=`  ${e.label.padEnd(16)} ${avg(emoVals[e.key])} / 5%0A`;});
+  b+=`%0ACOMPORTAMIENTOS (total)%0A────────────────────────────%0A`;
+  BEHAVIORS.forEach(beh=>{b+=`  ${beh.label.padEnd(28)} ${totals[beh.key]}%0A`;});
+  b+=`%0A%0A════════════════════════════%0ADETALLE DÍA A DÍA%0A════════════════════════════%0A%0AFecha       | Grat | Orgu | Auto | Tris | Ansi | Culp | Enfa | Justin | Alba%0A────────────|------|------|------|------|------|------|------|--------|-------%0A`;
+  [...filtered].reverse().forEach(e=>{
+    b+=`${fmtShort(e.date).padEnd(11)} | ${String(n(e.emotions?.gratitud)).padEnd(4)} | ${String(n(e.emotions?.orgullo)).padEnd(4)} | ${String(n(e.emotions?.autocompasion)).padEnd(4)} | ${String(n(e.emotions?.tristeza)).padEnd(4)} | ${String(n(e.emotions?.ansiedad)).padEnd(4)} | ${String(n(e.emotions?.culpa)).padEnd(4)} | ${String(n(e.emotions?.enfado)).padEnd(4)} | ${String(e.behaviors?.justin||0).padEnd(6)} | ${e.behaviors?.alba||0}%0A`;
+    const nl=Object.entries(e.comments||{}).map(([k,v])=>`${cap(k)}: ${v}`);
+    if(nl.length)b+=`  Notas: ${nl.join(' / ')}%0A`;
+  });
+  b+=`%0A%0A${forBev?`Quedo a tu disposición para revisarlo en nuestra próxima sesión.%0A%0AUn abrazo,`:`Guardado para tu referencia.`}`;
+  return b;
+}
+function openMail(who){
+  const from=document.getElementById('date-from').value,to=document.getElementById('date-to').value;
+  if(!from||!to){alert('Selecciona primero el rango de fechas.');return;}
+  const filtered=entries.filter(e=>e.date>=from&&e.date<=to);
+  if(!filtered.length){alert('No hay datos en este rango.');return;}
+  const addr=who==='bev'?'admin@drbevwilliams.com':'jimena.martin@emory.edu';
+  const subj=encodeURIComponent(`Registro emocional – ${fmtLong(from)} al ${fmtLong(to)}`);
+  window.location.href=`mailto:${addr}?subject=${subj}&body=${buildMail(from,to,filtered,who==='bev')}`;
+}
+
+function renderReport(){
+  const from=document.getElementById('date-from').value,to=document.getElementById('date-to').value;
+  const filtered=entries.filter(e=>e.date>=from&&e.date<=to);
+  const el=document.getElementById('rpt-content');
+  if(!filtered.length){el.innerHTML='<div class="empty">Sin datos en este rango.</div>';return;}
+  const{totals,emoVals}=calcStats(filtered);
+  const avg=arr=>{const a=avgArr(arr);return a!=null?a.toFixed(1):'—';};
+  el.innerHTML=`
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val">${filtered.length}</div><div class="stat-lbl">Días registrados</div></div>
+      <div class="stat-card"><div class="stat-val">${totals.justin}</div><div class="stat-lbl">Disc. Justin</div></div>
+      <div class="stat-card"><div class="stat-val">${totals.alba}</div><div class="stat-lbl">Voz Alba</div></div>
+    </div>
+    <div class="stat-grid-emo">
+      ${EMOTIONS.map(e=>`<div class="stat-card"><div class="stat-val" style="color:${e.dot}">${avg(emoVals[e.key])}</div><div class="stat-lbl">${e.label}</div></div>`).join('')}
+    </div>
+    <div class="legend">
+      ${EMOTIONS.map(e=>`<span><span class="legend-dot" style="background:${e.dot}"></span>${e.label}</span>`).join('')}
+      <span><span class="legend-dot" style="background:#AFA9EC"></span>Disc. Justin</span>
+      <span><span class="legend-dot" style="background:#F0997B"></span>Voz Alba</span>
+    </div>
+    <div class="chart-wrap"><canvas id="rpt-chart" role="img" aria-label="Evolución de emociones y comportamientos">Gráfico de evolución.</canvas></div>`;
+  const ordered=[...filtered].reverse();
+  const labels=ordered.map(e=>fmtShort(e.date));
+  const datasets=[
+    ...EMOTIONS.map(e=>({label:e.label,type:'line',data:ordered.map(en=>en.emotions?.[e.key]||null),borderColor:e.dot,backgroundColor:e.dot+'22',tension:.3,spanGaps:true,pointRadius:4,yAxisID:'y'})),
+    {label:'Disc. Justin',type:'bar',data:ordered.map(e=>e.behaviors?.justin||0),backgroundColor:'#AFA9EC',yAxisID:'y2'},
+    {label:'Voz Alba',    type:'bar',data:ordered.map(e=>e.behaviors?.alba||0),   backgroundColor:'#F0997B',yAxisID:'y2'},
+  ];
+  if(rptChart){rptChart.destroy();rptChart=null;}
+  rptChart=new Chart(document.getElementById('rpt-chart'),{
+    type:'bar',data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{min:0,max:5,ticks:{stepSize:1},title:{display:true,text:'Intensidad'}},
+        y2:{position:'right',min:0,ticks:{stepSize:1},title:{display:true,text:'Veces'},grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+}
+
+function init(){
+  initDate();
+  loadDay(workDate);
+  const today=new Date(),d7=new Date();d7.setDate(d7.getDate()-6);
+  document.getElementById('date-from').value=dateStr(d7);
+  document.getElementById('date-to').value=dateStr(today);
+  renderReport();
+}
+
+init();
+</script>
+</body>
+</html>
