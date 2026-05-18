@@ -169,7 +169,6 @@
       background: var(--card); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 14px 12px; cursor: pointer;
       text-align: center; transition: transform .1s; user-select: none; -webkit-user-select: none;
-      active: scale(.96);
     }
     .emo-btn:active { transform: scale(.96); }
     .emo-btn .emo-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
@@ -500,11 +499,20 @@ function avgArr(arr){ return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:null
 function calcStats(filtered){
   const totals=Object.fromEntries(BEHAVIORS.map(b=>[b.key,0]));
   const emoVals=Object.fromEntries(EMOTIONS.map(e=>[e.key,[]]));
+  const emoCounts=Object.fromEntries(EMOTIONS.map(e=>[e.key,0]));
   filtered.forEach(entry=>{
     BEHAVIORS.forEach(b=>{totals[b.key]+=(entry.behaviors?.[b.key]||0);});
-    EMOTIONS.forEach(e=>{if(entry.emotions?.[e.key]!=null) emoVals[e.key].push(entry.emotions[e.key]);});
+    EMOTIONS.forEach(e=>{
+      if(entry.emotions?.[e.key]!=null){
+        emoVals[e.key].push(entry.emotions[e.key]);
+      }
+      // Count individual log entries if available
+      if(entry.logs){
+        emoCounts[e.key]+=(entry.logs.filter(l=>l.emotion===e.key).length);
+      }
+    });
   });
-  return{totals,emoVals};
+  return{totals,emoVals,emoCounts};
 }
 
 function getLogAvg(key){ return avgArr(logs.filter(l=>l.emotion===key).map(l=>l.intensity)); }
@@ -621,6 +629,23 @@ function confirmEmo(){
   activeEmo=null;activeInt=null;
   document.getElementById('int-panel').style.display='none';
   renderQuickGrid();renderLogList();
+  autoSave();
+}
+
+function autoSave(){
+  const emotions=Object.fromEntries(EMOTIONS.map(e=>[e.key,getFinal(e.key)]).filter(([,v])=>v!=null));
+  const comments={},notesByEmo={};
+  logs.forEach(l=>{if(l.note){(notesByEmo[l.emotion]=notesByEmo[l.emotion]||[]).push(l.note);}});
+  Object.entries(notesByEmo).forEach(([k,arr])=>{comments[k]=arr.join(' / ');});
+  BEHAVIORS.forEach(b=>{const el=document.getElementById('note-'+b.key);if(el&&el.value.trim())comments[b.key]=el.value.trim();});
+  const entry={date:workDate,ts:new Date().toISOString(),emotions,behaviors:{...behaviors},comments,logs:[...logs]};
+  const idx=entries.findIndex(e=>e.date===workDate);
+  if(idx>=0)entries[idx]=entry;else entries.push(entry);
+  persist();
+  // Subtle flash feedback
+  const grid=document.getElementById('quick-grid');
+  grid.style.opacity='.7';
+  setTimeout(()=>grid.style.opacity='1',300);
 }
 function cancelInt(){activeEmo=null;activeInt=null;document.getElementById('int-panel').style.display='none';}
 
@@ -721,15 +746,18 @@ function editEntry(d){
 }
 
 function buildMail(from,to,filtered,forBev){
-  const{totals,emoVals}=calcStats(filtered);
+  const{totals,emoVals,emoCounts}=calcStats(filtered);
   const days=filtered.length;
   const avg=arr=>{const a=avgArr(arr);return a!=null?a.toFixed(1):'-';};
   const n=v=>(v!=null&&v!=='')?v:'-';
   let b=forBev
     ?`Hola Bev,%0A%0ATe comparto mi registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''} registrado${days!==1?'s':''}).%0A%0A`
     :`Hola,%0A%0AAquí tienes tu registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''}).%0A%0A`;
-  b+=`════════════════════════════%0ARESUMEN DEL PERÍODO%0A════════════════════════════%0A%0AEMOCIONES (promedio de intensidad 1-5)%0A────────────────────────────%0A`;
-  EMOTIONS.forEach(e=>{b+=`  ${e.label.padEnd(16)} ${avg(emoVals[e.key])} / 5%0A`;});
+  b+=`════════════════════════════%0ARESUMEN DEL PERÍODO%0A════════════════════════════%0A%0AEMOCIONES (promedio de intensidad 1-5 · total de registros)%0A────────────────────────────%0A`;
+  EMOTIONS.forEach(e=>{
+    const cnt=emoCounts[e.key];
+    b+=`  ${e.label.padEnd(16)} ${avg(emoVals[e.key])} / 5${cnt>0?`  (${cnt} registro${cnt>1?'s':''})`:''}%0A`;
+  });
   b+=`%0ACOMPORTAMIENTOS (total)%0A────────────────────────────%0A`;
   BEHAVIORS.forEach(beh=>{b+=`  ${beh.label.padEnd(28)} ${totals[beh.key]}%0A`;});
   b+=`%0A%0A════════════════════════════%0ADETALLE DÍA A DÍA%0A════════════════════════════%0A%0AFecha       | Grat | Orgu | Auto | Tris | Ansi | Culp | Enfa | Justin | Alba%0A────────────|------|------|------|------|------|------|------|--------|-------%0A`;
@@ -756,7 +784,7 @@ function renderReport(){
   const filtered=entries.filter(e=>e.date>=from&&e.date<=to);
   const el=document.getElementById('rpt-content');
   if(!filtered.length){el.innerHTML='<div class="empty">Sin datos en este rango.</div>';return;}
-  const{totals,emoVals}=calcStats(filtered);
+  const{totals,emoVals,emoCounts}=calcStats(filtered);
   const avg=arr=>{const a=avgArr(arr);return a!=null?a.toFixed(1):'—';};
   el.innerHTML=`
     <div class="stat-grid">
@@ -765,7 +793,11 @@ function renderReport(){
       <div class="stat-card"><div class="stat-val">${totals.alba}</div><div class="stat-lbl">Voz Alba</div></div>
     </div>
     <div class="stat-grid-emo">
-      ${EMOTIONS.map(e=>`<div class="stat-card"><div class="stat-val" style="color:${e.dot}">${avg(emoVals[e.key])}</div><div class="stat-lbl">${e.label}</div></div>`).join('')}
+      ${EMOTIONS.map(e=>`<div class="stat-card">
+        <div class="stat-val" style="color:${e.dot}">${avg(emoVals[e.key])}</div>
+        <div class="stat-lbl">${e.label}</div>
+        ${emoCounts[e.key]>0?`<div style="font-size:10px;color:var(--text3);margin-top:2px">${emoCounts[e.key]} registro${emoCounts[e.key]>1?'s':''}</div>`:''}
+      </div>`).join('')}
     </div>
     <div class="legend">
       ${EMOTIONS.map(e=>`<span><span class="legend-dot" style="background:${e.dot}"></span>${e.label}</span>`).join('')}
