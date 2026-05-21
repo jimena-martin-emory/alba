@@ -304,6 +304,14 @@
     <label>Desde</label><input type="date" id="date-from" onchange="renderReport()">
     <label>Hasta</label><input type="date" id="date-to" onchange="renderReport()">
   </div>
+  <div class="send-box" style="margin-bottom:12px;">
+    <div class="send-box-label">💾 Copia de seguridad de tus datos</div>
+    <div class="send-btns">
+      <button class="send-btn" style="background:#EAF3DE;color:#2d5a0e;border-color:#C0DD97;" onclick="exportData()">⬇ Exportar datos</button>
+      <button class="send-btn" style="background:#E6F1FB;color:#154d87;border-color:#B5D4F4;" onclick="importData()">⬆ Importar datos</button>
+    </div>
+    <div class="send-note">ℹ Exporta regularmente para no perder tus registros. Guarda el archivo en iCloud Drive o en tu email.</div>
+  </div>
   <div class="send-box">
     <div class="send-box-label">✉ Compartir por correo — resumen + tabla completa</div>
     <div class="send-btns">
@@ -387,7 +395,7 @@ let entries = [];
 try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); } catch(e) {}
 
 let workDate = dateStr(new Date());
-let logs = [], behaviors = {justin:0,alba:0}, strategies = {}, overrides = {};
+let logs = [], behaviors = {justin:0,alba:0}, strategies = {}, stratNotes = {}, overrides = {};
 let activeEmo = null, activeInt = null, rptChart = null;
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
@@ -421,6 +429,7 @@ function buildEntry(){
     date:workDate, ts:new Date().toISOString(),
     emotions, behaviors:{...behaviors},
     strategies:{...strategies},
+    stratNotes:{...stratNotes},
     comments, logs:[...logs]
   };
 }
@@ -441,13 +450,14 @@ function saveEntry(){
 }
 
 function loadDay(d){
-  logs=[]; behaviors={justin:0,alba:0}; strategies={}; overrides={};
+  logs=[]; behaviors={justin:0,alba:0}; strategies={}; stratNotes={}; overrides={};
   activeEmo=null; activeInt=null;
   const ex=entries.find(e=>e.date===d);
   if(ex){
     logs=ex.logs?[...ex.logs]:[];
     behaviors={...(ex.behaviors||{justin:0,alba:0})};
     strategies={...(ex.strategies||{})};
+    stratNotes={...(ex.stratNotes||{})};
     // If no logs but has emotion values, load as overrides (skip value=1 defaults)
     if(!logs.length&&ex.emotions){
       Object.entries(ex.emotions).forEach(([k,v])=>{ if(v>1) overrides[k]=v; });
@@ -654,6 +664,7 @@ function toggleNote(key){ const el=document.getElementById('note-'+key); el.styl
 function renderStratList(){
   document.getElementById('strat-list').innerHTML=STRATEGIES.map(s=>{
     const count=strategies[s.key]||0;
+    const notes=stratNotes[s.key]||[];
     const stepsHtml=s.steps.map(step=>`
       <div class="strat-step">
         <div class="strat-letter" style="background:${s.color}">${step.letter}</div>
@@ -662,6 +673,13 @@ function renderStratList(){
           ${step.text}
         </div>
       </div>`).join('');
+    const histHtml=notes.length?`<div style="margin-top:10px;margin-bottom:6px;">
+      ${notes.map((n,i)=>`<div class="log-item" style="margin-bottom:6px;">
+        <span class="log-time">${n.time}</span>
+        <span class="log-note-text" style="flex:1;font-style:normal">${n.text||'Sin nota'}</span>
+        <span class="log-del" onclick="deleteStratNote('${s.key}',${i})">✕</span>
+      </div>`).join('')}
+    </div>`:'';
     return `<div class="strat-card">
       <div class="strat-header" onclick="toggleStrat('${s.key}')">
         <div class="strat-left">
@@ -675,13 +693,12 @@ function renderStratList(){
       </div>
       <div class="strat-body" id="strat-body-${s.key}">
         <div class="strat-steps">${stepsHtml}</div>
+        <textarea class="note-area" id="strat-note-${s.key}" placeholder="Nota opcional — ¿cómo fue? ¿qué pasó?" style="margin-bottom:10px;"></textarea>
         <button class="strat-tap-btn" style="background:${s.bg};color:${s.color}" onclick="tapStrat('${s.key}')">
           ✓ Usé esta estrategia ahora
         </button>
-        <div class="strat-dots" id="strat-dots-${s.key}">
-          ${Array.from({length:count},()=>`<div class="strat-dot" style="background:${s.color}"></div>`).join('')}
-        </div>
-        ${count>0?`<span class="strat-undo" onclick="undoStrat('${s.key}')">↩ Deshacer</span>`:''}
+        ${histHtml}
+        ${count>0?`<span class="strat-undo" onclick="undoStrat('${s.key}')">↩ Deshacer último</span>`:''}
         <div class="autosave-flash" id="flash-strat-${s.key}" style="margin-top:6px"></div>
       </div>
     </div>`;
@@ -694,10 +711,13 @@ function toggleStrat(key){
 }
 
 function tapStrat(key){
+  const noteEl=document.getElementById('strat-note-'+key);
+  const noteText=noteEl?noteEl.value.trim():'';
   strategies[key]=(strategies[key]||0)+1;
+  if(!stratNotes[key]) stratNotes[key]=[];
+  stratNotes[key].push({time:isToday()?fmtTime():fmtLong(workDate), text:noteText});
   autoSave();
   renderStratList();
-  // Re-open the card
   const body=document.getElementById('strat-body-'+key);
   if(body) body.classList.add('open');
   const flash=document.getElementById('flash-strat-'+key);
@@ -705,7 +725,17 @@ function tapStrat(key){
 }
 
 function undoStrat(key){
-  if(strategies[key]>0){ strategies[key]--; autoSave(); renderStratList();
+  if(strategies[key]>0){
+    strategies[key]--;
+    if(stratNotes[key]&&stratNotes[key].length>0) stratNotes[key].pop();
+    autoSave(); renderStratList();
+    const body=document.getElementById('strat-body-'+key);
+    if(body) body.classList.add('open');
+  }
+}
+
+function deleteStratNote(key,i){
+  if(stratNotes[key]){ stratNotes[key].splice(i,1); strategies[key]=Math.max(0,(strategies[key]||0)-1); autoSave(); renderStratList();
     const body=document.getElementById('strat-body-'+key);
     if(body) body.classList.add('open');
   }
@@ -851,7 +881,42 @@ function renderReport(){
   });
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+// ─── EXPORT / IMPORT ──────────────────────────────────────────────────────────
+function exportData(){
+  const json=JSON.stringify(entries,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`alba-backup-${dateStr(new Date())}.json`;
+  a.click();
+}
+
+function importData(){
+  const input=document.createElement('input');
+  input.type='file'; input.accept='.json';
+  input.onchange=e=>{
+    const file=e.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const imported=JSON.parse(ev.target.result);
+        if(!Array.isArray(imported)) throw new Error('Formato inválido');
+        // Merge: imported entries take priority over existing ones for same date
+        imported.forEach(imp=>{
+          const idx=entries.findIndex(en=>en.date===imp.date);
+          if(idx>=0) entries[idx]=imp; else entries.push(imp);
+        });
+        persist();
+        alert(`✓ ${imported.length} registro${imported.length!==1?'s':''} importado${imported.length!==1?'s':''}. Reinicia la app para ver los cambios.`);
+        loadDay(workDate); renderHistorial(); renderReport();
+      } catch(err){ alert('Error al importar: el archivo no es válido.'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+
 function init(){
   initDate();
   loadDay(workDate);
