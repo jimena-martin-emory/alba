@@ -9,6 +9,7 @@
   <meta name="theme-color" content="#F7C59F">
   <title>Alba — Registro Emocional</title>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
       --bg:#faf7f4; --bg2:#f2ede8; --card:#ffffff;
@@ -24,28 +25,27 @@
     *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
     body{ font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:env(safe-area-inset-bottom); }
 
-    /* HEADER */
     .header{ background:linear-gradient(180deg,#F7C59F 0%,#F4956A 55%,#E86848 100%); }
     .header-inner{ padding:16px 20px 14px; padding-top:calc(16px + env(safe-area-inset-top)); display:flex; align-items:center; gap:12px; }
     .header-icon{ width:42px; height:42px; background:#3d1c08; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden; }
     .header-icon svg{ width:42px; height:42px; }
     .header-title{ font-size:22px; font-weight:600; color:#3d1c00; }
     .header-sub{ font-size:12px; color:#7a3a10; }
+    .header-right{ margin-left:auto; }
+    .sync-btn{ background:rgba(61,28,0,0.15); border:none; border-radius:8px; padding:6px 10px; font-size:12px; font-weight:600; color:#3d1c00; cursor:pointer; display:flex; align-items:center; gap:5px; }
+    .sync-btn.connected{ background:rgba(61,28,0,0.25); }
 
-    /* TABS */
     .tabs{ display:flex; background:var(--bg2); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
     .tab{ flex:1; padding:10px 4px; text-align:center; font-size:11px; font-weight:500; color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; }
     .tab.active{ color:var(--accent); border-bottom-color:var(--accent); }
     .tab-icon{ font-size:17px; display:block; margin-bottom:2px; }
     .view{ display:none; padding:16px; } .view.active{ display:block; }
 
-    /* SUBTABS */
     .subtabs{ display:flex; gap:5px; margin-bottom:16px; flex-wrap:wrap; }
     .subtab{ flex:1; min-width:60px; padding:8px 4px; text-align:center; font-size:11px; font-weight:500; cursor:pointer; border-radius:var(--radius-sm); border:1px solid var(--border); color:var(--text2); background:transparent; transition:all .15s; }
     .subtab.active{ border-color:var(--accent); color:var(--accent); background:var(--bg2); }
     .subview{ display:none; } .subview.active{ display:block; }
 
-    /* UTILITIES */
     .section-label{ font-size:11px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; }
     .storage-note{ font-size:12px; color:var(--text2); display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--bg2); border-radius:var(--radius-sm); margin-bottom:16px; }
     .card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; }
@@ -53,22 +53,19 @@
     .badge{ font-size:11px; padding:3px 10px; border-radius:20px; font-weight:600; white-space:nowrap; }
     .badge-today{ background:#EAF3DE; color:#3B6D11; } .badge-past{ background:#FAEEDA; color:#854F0B; }
     .banner{ font-size:12px; border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:14px; display:none; align-items:flex-start; gap:8px; }
-    .banner.show{ display:flex; } .banner-warn{ color:#854F0B; background:#FAEEDA; }
+    .banner.show{ display:flex; } .banner-warn{ color:#854F0B; background:#FAEEDA; } .banner-ok{ color:#2d5a0e; background:#EAF3DE; }
     .flash{ font-size:11px; color:#3B6D11; text-align:right; margin-top:6px; height:16px; }
 
-    /* DATE BAR */
     .date-bar{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; margin-bottom:16px; }
     .date-bar label{ font-size:13px; color:var(--text2); white-space:nowrap; }
     .date-bar input[type=date]{ border:1px solid var(--border); border-radius:var(--radius-sm); padding:6px 8px; font-size:13px; font-family:inherit; background:var(--bg); color:var(--text); flex:1; }
 
-    /* EMOTION GRID */
     .emo-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:16px; }
     .emo-btn{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 12px; cursor:pointer; text-align:center; user-select:none; -webkit-user-select:none; transition:transform .1s; }
     .emo-btn:active{ transform:scale(.96); }
     .emo-name{ font-size:16px; font-weight:600; margin-bottom:4px; }
     .emo-count{ font-size:11px; color:var(--text2); }
 
-    /* INTENSITY PANEL */
     .int-panel{ background:var(--card); border:1px solid var(--border2); border-radius:var(--radius); padding:16px; margin-bottom:14px; }
     .int-title{ font-size:15px; font-weight:600; color:var(--text); margin-bottom:12px; }
     .int-row{ display:flex; gap:8px; margin-bottom:12px; }
@@ -80,7 +77,6 @@
     .btn-ok{ flex:2; padding:12px; border-radius:var(--radius-sm); border:none; font-size:15px; font-weight:600; cursor:pointer; color:white; }
     .btn-no{ flex:1; padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border2); background:transparent; font-size:15px; cursor:pointer; color:var(--text2); }
 
-    /* LOG LIST */
     .log-item{ display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:var(--radius-sm); background:var(--bg2); margin-bottom:8px; flex-wrap:wrap; }
     .ldot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
     .ltime{ color:var(--text3); font-size:11px; flex-shrink:0; }
@@ -89,7 +85,6 @@
     .lnote{ color:var(--text2); font-size:11px; font-style:italic; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .ldel{ margin-left:auto; cursor:pointer; color:var(--text3); flex-shrink:0; font-size:18px; padding:4px; }
 
-    /* SUMMARY */
     .sum-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:6px; }
     .sum-name{ font-size:16px; font-weight:600; }
     .sum-badge{ font-size:12px; font-weight:600; padding:4px 12px; border-radius:20px; }
@@ -104,7 +99,6 @@
     .save-btn{ width:100%; padding:15px; background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); font-size:16px; font-weight:600; color:var(--text); cursor:pointer; margin-top:8px; transition:all .15s; }
     .save-btn.saved{ border-color:#3B6D11; color:#3B6D11; background:#EAF3DE; }
 
-    /* BEHAVIORS */
     .beh-card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; }
     .beh-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
     .beh-name{ font-size:16px; font-weight:600; color:var(--text); }
@@ -119,7 +113,6 @@
     .beh-footer{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
     .link-sm{ font-size:13px; color:var(--text2); cursor:pointer; display:inline-flex; align-items:center; gap:4px; padding:4px 0; }
 
-    /* STRATEGIES */
     .strat-card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:12px; overflow:hidden; }
     .strat-header{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer; }
     .strat-left{ display:flex; align-items:center; gap:12px; }
@@ -137,9 +130,7 @@
     .strat-tap-btn:active{ transform:scale(.96); opacity:.85; }
     .strat-undo{ font-size:12px; color:var(--text3); cursor:pointer; display:inline-flex; align-items:center; gap:4px; margin-top:8px; }
 
-    /* HISTORIAL */
-    .hist-entry{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; cursor:pointer; transition:border-color .15s; }
-    .hist-entry:hover{ border-color:var(--border2); }
+    .hist-entry{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; cursor:pointer; }
     .hist-date{ font-size:12px; color:var(--text2); margin-bottom:8px; }
     .hist-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
     .chip{ font-size:12px; padding:4px 12px; border-radius:20px; font-weight:600; }
@@ -151,7 +142,6 @@
     .hist-notes{ font-size:12px; color:var(--text2); font-style:italic; margin-top:4px; }
     .hist-hint{ font-size:11px; color:var(--text3); margin-top:6px; }
 
-    /* REPORT */
     .rpt-controls{ display:flex; gap:8px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
     .rpt-controls label{ font-size:13px; color:var(--text2); }
     .rpt-controls input[type=date]{ border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px; font-size:13px; font-family:inherit; background:var(--card); color:var(--text); flex:1; }
@@ -172,9 +162,36 @@
     .legend{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
     .legend span{ display:flex; align-items:center; gap:4px; font-size:11px; color:var(--text2); }
     .ldot-sq{ width:10px; height:10px; border-radius:2px; display:inline-block; }
+
+    /* GOOGLE SYNC MODAL */
+    .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.show{ display:flex; }
+    .modal{ background:var(--card); border-radius:var(--radius); padding:24px; width:100%; max-width:380px; }
+    .modal-title{ font-size:18px; font-weight:600; color:var(--text); margin-bottom:8px; }
+    .modal-body{ font-size:14px; color:var(--text2); line-height:1.6; margin-bottom:20px; }
+    .modal-btns{ display:flex; gap:10px; flex-direction:column; }
+    .btn-google{ padding:14px; border-radius:var(--radius-sm); border:1px solid var(--border2); background:white; font-size:15px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; color:#3c4043; }
+    .btn-close{ padding:12px; border-radius:var(--radius-sm); border:none; background:transparent; font-size:14px; cursor:pointer; color:var(--text2); }
   </style>
 </head>
 <body>
+
+<!-- GOOGLE SYNC MODAL -->
+<div class="modal-overlay" id="sync-modal">
+  <div class="modal">
+    <div class="modal-title">🔗 Conectar con Google</div>
+    <div class="modal-body">
+      Al conectar tu cuenta de Google, tus registros se guardarán automáticamente en Google Sheets y podrás compartir el link con Bev para que lo vea en cualquier momento.
+    </div>
+    <div class="modal-btns">
+      <button class="btn-google" onclick="signInGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Conectar con Google
+      </button>
+      <button class="btn-close" onclick="closeSyncModal()">Ahora no</button>
+    </div>
+  </div>
+</div>
 
 <div class="header">
   <div class="header-inner">
@@ -196,7 +213,13 @@
     </div>
     <div>
       <div class="header-title">Alba</div>
-      <div class="header-sub">registro emocional</div>
+      <div class="header-sub" id="header-sub">registro emocional</div>
+    </div>
+    <div class="header-right">
+      <button class="sync-btn" id="sync-btn" onclick="handleSyncBtn()">
+        <span id="sync-icon">☁</span>
+        <span id="sync-label">Conectar</span>
+      </button>
     </div>
   </div>
 </div>
@@ -209,7 +232,7 @@
 
 <!-- REGISTRAR -->
 <div id="view-registrar" class="view active">
-  <div class="storage-note">🔒 Datos guardados en este dispositivo.</div>
+  <div class="storage-note" id="storage-note">🔒 Datos guardados en este dispositivo.</div>
   <div class="date-bar">
     <label>📅 Fecha</label>
     <input type="date" id="working-date" onchange="onDateChange()">
@@ -295,22 +318,35 @@
     <label>Desde</label><input type="date" id="date-from" onchange="renderReport()">
     <label>Hasta</label><input type="date" id="date-to" onchange="renderReport()">
   </div>
-  <div class="send-box">
-    <div class="send-box-label">💾 Copia de seguridad</div>
+
+  <!-- Google Sheets box -->
+  <div class="send-box" id="sheets-box">
+    <div class="send-box-label">📊 Google Sheets — reporte en vivo</div>
+    <div id="sheets-status" style="font-size:13px;color:var(--text2);margin-bottom:10px;">Conecta tu cuenta Google para activar esta función.</div>
     <div class="send-btns">
-      <button class="send-btn" style="background:#EAF3DE;color:#2d5a0e;border-color:#C0DD97;" onclick="exportData()">⬇ Exportar</button>
-      <button class="send-btn" style="background:#E6F1FB;color:#154d87;border-color:#B5D4F4;" onclick="importData()">⬆ Importar</button>
+      <button class="send-btn" style="background:#EAF3DE;color:#2d5a0e;border-color:#C0DD97;" id="btn-sync-sheets" onclick="syncToSheets()">📤 Sincronizar con Sheets</button>
+      <button class="send-btn" style="background:#E6F1FB;color:#154d87;border-color:#B5D4F4;" id="btn-open-sheets" onclick="openSheets()" style="display:none">📋 Abrir Sheets</button>
     </div>
-    <div class="send-note">ℹ Exporta regularmente y guarda el archivo en tu email o iCloud Drive.</div>
   </div>
+
   <div class="send-box">
-    <div class="send-box-label">✉ Compartir por correo</div>
+    <div class="send-box-label">✉ Compartir por correo — incluye link a Sheets</div>
     <div class="send-btns">
       <button class="send-btn send-bev" onclick="openMail('bev')">⚕ Enviar a Bev</button>
       <button class="send-btn send-me" onclick="openMail('me')">👤 Enviarme a mí</button>
     </div>
-    <div class="send-note">ℹ Incluye resumen y tabla día a día con estrategias.</div>
+    <div class="send-note">ℹ Incluye resumen, tabla día a día y link al Google Sheets compartido.</div>
   </div>
+
+  <div class="send-box">
+    <div class="send-box-label">💾 Copia de seguridad local</div>
+    <div class="send-btns">
+      <button class="send-btn" style="background:#EAF3DE;color:#2d5a0e;border-color:#C0DD97;" onclick="exportData()">⬇ Exportar JSON</button>
+      <button class="send-btn" style="background:#E6F1FB;color:#154d87;border-color:#B5D4F4;" onclick="importData()">⬆ Importar JSON</button>
+    </div>
+    <div class="send-note">ℹ Exporta regularmente como copia de seguridad local.</div>
+  </div>
+
   <div id="rpt-content"><div class="empty">Selecciona un rango para ver el reporte.</div></div>
 </div>
 
@@ -321,9 +357,15 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/alba/sw.js').catch(()=>{});
 }
 
+// ─── GOOGLE CONFIG ────────────────────────────────────────────────────────────
+const GOOGLE_CLIENT_ID = '55641624449-rb609vg8fpucfm5liqoprht1tffvhvtv.apps.googleusercontent.com';
+const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
+let gToken = null;
+let sheetId = localStorage.getItem('alba_sheet_id') || null;
+let tokenClient = null;
+
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'emo_tracker_v1';
-
 const EMOTIONS = [
   {key:'gratitud',      label:'Gratitud',      color:'#2d5a0e', bg:'#EAF3DE', dot:'#639922'},
   {key:'orgullo',       label:'Orgullo',        color:'#154d87', bg:'#E6F1FB', dot:'#378ADD'},
@@ -375,7 +417,6 @@ const STRATEGIES = [
     ]
   },
 ];
-const STRAT = Object.fromEntries(STRATEGIES.map(s=>[s.key,s]));
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let entries = [];
@@ -393,6 +434,147 @@ function fmtLong(str){ return new Date(str+'T12:00:00').toLocaleDateString('es-E
 function fmtShort(str){ return new Date(str+'T12:00:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'}); }
 function fmtTime(){ return new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}); }
 function avgArr(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null; }
+
+// ─── GOOGLE AUTH ──────────────────────────────────────────────────────────────
+function initGoogleAuth(){
+  try {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: SCOPES,
+      callback: (response) => {
+        if(response.error) return;
+        gToken = response.access_token;
+        localStorage.setItem('alba_gtoken', gToken);
+        updateSyncUI();
+        if(!sheetId) createSheet();
+      }
+    });
+    // Restore token if exists
+    const saved = localStorage.getItem('alba_gtoken');
+    if(saved){ gToken = saved; updateSyncUI(); }
+  } catch(e) {}
+}
+
+function handleSyncBtn(){
+  if(gToken){ openSyncModal(); } else { openSyncModal(); }
+}
+function openSyncModal(){ document.getElementById('sync-modal').classList.add('show'); }
+function closeSyncModal(){ document.getElementById('sync-modal').classList.remove('show'); }
+
+function signInGoogle(){
+  closeSyncModal();
+  if(tokenClient){ tokenClient.requestAccessToken(); }
+  else { alert('Error al cargar Google. Recarga la app e inténtalo de nuevo.'); }
+}
+
+function updateSyncUI(){
+  const connected = !!gToken;
+  const btn = document.getElementById('sync-btn');
+  const note = document.getElementById('storage-note');
+  const sheetsStatus = document.getElementById('sheets-status');
+  if(connected){
+    btn.classList.add('connected');
+    document.getElementById('sync-icon').textContent = '✓';
+    document.getElementById('sync-label').textContent = 'Google';
+    note.textContent = '☁ Datos sincronizados con Google Sheets.';
+    sheetsStatus.textContent = sheetId ? '✓ Conectado a Google Sheets.' : 'Preparando Google Sheets...';
+    if(sheetId){
+      document.getElementById('btn-open-sheets').style.display='flex';
+    }
+  } else {
+    btn.classList.remove('connected');
+    document.getElementById('sync-icon').textContent = '☁';
+    document.getElementById('sync-label').textContent = 'Conectar';
+  }
+}
+
+// ─── GOOGLE SHEETS ────────────────────────────────────────────────────────────
+async function createSheet(){
+  if(!gToken) return;
+  try {
+    // Create spreadsheet
+    const res = await fetch('https://sheets.googleapis.com/v4/spreadsheets', {
+      method:'POST',
+      headers:{'Authorization':'Bearer '+gToken,'Content-Type':'application/json'},
+      body: JSON.stringify({
+        properties:{title:'Alba — Registro Emocional'},
+        sheets:[{properties:{title:'Registros'}},{properties:{title:'Resumen'}}]
+      })
+    });
+    const data = await res.json();
+    sheetId = data.spreadsheetId;
+    localStorage.setItem('alba_sheet_id', sheetId);
+
+    // Set up header row
+    await setupSheetHeaders();
+    updateSyncUI();
+    // Sync all existing entries
+    await syncToSheets();
+  } catch(e) { console.error('Error creating sheet:', e); }
+}
+
+async function setupSheetHeaders(){
+  if(!gToken || !sheetId) return;
+  const headers = [['Fecha','Gratitud','Orgullo','Autocompasión','Tristeza','Ansiedad','Culpa','Enfado','Disc.Justin','Voz.Alba','TIPP','Mindfulness','STOP','DEAR MAN','Notas']];
+  await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Registros!A1:O1?valueInputOption=RAW`, {
+    method:'PUT',
+    headers:{'Authorization':'Bearer '+gToken,'Content-Type':'application/json'},
+    body: JSON.stringify({values: headers})
+  });
+}
+
+async function syncToSheets(){
+  if(!gToken){ openSyncModal(); return; }
+  if(!sheetId){ await createSheet(); return; }
+
+  const btn = document.getElementById('btn-sync-sheets');
+  btn.textContent = '⏳ Sincronizando...';
+  btn.disabled = true;
+
+  try {
+    const n = v => (v!=null && v!=='') ? v : '';
+    const rows = [...entries].reverse().map(e => [
+      e.date,
+      n(e.emotions?.gratitud), n(e.emotions?.orgullo), n(e.emotions?.autocompasion),
+      n(e.emotions?.tristeza), n(e.emotions?.ansiedad), n(e.emotions?.culpa), n(e.emotions?.enfado),
+      e.behaviors?.justin||0, e.behaviors?.alba||0,
+      e.strategies?.tipp||0, e.strategies?.mindfulness||0, e.strategies?.stop||0, e.strategies?.dearman||0,
+      Object.entries(e.comments||{}).filter(([,v])=>v&&v!=='No registrado este día').map(([k,v])=>`${cap(k)}: ${v}`).join(' | ')
+    ]);
+
+    // Clear and rewrite
+    await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Registros!A2:O1000:clear`, {
+      method:'POST', headers:{'Authorization':'Bearer '+gToken}
+    });
+
+    if(rows.length > 0){
+      await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Registros!A2:O${rows.length+1}?valueInputOption=RAW`, {
+        method:'PUT',
+        headers:{'Authorization':'Bearer '+gToken,'Content-Type':'application/json'},
+        body: JSON.stringify({values: rows})
+      });
+    }
+
+    btn.textContent = '✓ Sincronizado';
+    setTimeout(()=>{ btn.textContent='📤 Sincronizar con Sheets'; btn.disabled=false; }, 2000);
+    document.getElementById('sheets-status').textContent = `✓ Sincronizado — ${rows.length} registro${rows.length!==1?'s':''}`;
+    document.getElementById('btn-open-sheets').style.display='flex';
+
+  } catch(e) {
+    btn.textContent = '❌ Error — intentar de nuevo';
+    btn.disabled = false;
+    // Token may have expired
+    if(e.message && e.message.includes('401')){ gToken=null; localStorage.removeItem('alba_gtoken'); updateSyncUI(); }
+  }
+}
+
+function openSheets(){
+  if(sheetId) window.open(`https://docs.google.com/spreadsheets/d/${sheetId}`, '_blank');
+}
+
+function getSheetUrl(){
+  return sheetId ? `https://docs.google.com/spreadsheets/d/${sheetId}` : null;
+}
 
 // ─── PERSISTENCE ──────────────────────────────────────────────────────────────
 function persist(){
@@ -465,7 +647,6 @@ function switchTab(tab){
   if(tab==='historial') renderHistorial();
   if(tab==='reporte') renderReport();
 }
-
 function switchSub(sub){
   ['rapido','resumen','habitos','estrategias'].forEach((s,i)=>{
     document.querySelectorAll('.subtab')[i].classList.toggle('active',s===sub);
@@ -498,9 +679,7 @@ function renderQuickGrid(){
     </button>`;
   }).join('');
 }
-
 function selectEmo(key){ activeEmo=key; activeInt=null; renderIntPanel(); }
-
 function renderIntPanel(){
   const panel=document.getElementById('int-panel'), e=EMO[activeEmo];
   if(!e){ panel.style.display='none'; return; }
@@ -517,9 +696,7 @@ function renderIntPanel(){
   </div>`;
   panel.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-
 function pickInt(v){ activeInt=v; renderIntPanel(); }
-
 function confirmEmo(){
   if(!activeInt){ alert('Selecciona una intensidad (1–5).'); return; }
   const note=document.getElementById('quick-note')?.value.trim()||'';
@@ -529,7 +706,6 @@ function confirmEmo(){
   renderQuickGrid(); renderLogList(); autoSave();
 }
 function cancelInt(){ activeEmo=null; activeInt=null; document.getElementById('int-panel').style.display='none'; }
-
 function renderLogList(){
   const wrap=document.getElementById('log-wrap');
   if(!logs.length){ wrap.style.display='none'; return; }
@@ -538,9 +714,7 @@ function renderLogList(){
     const i=logs.length-1-ri, e=EMO[l.emotion];
     return `<div class="log-item">
       <div class="ldot" style="background:${e.dot}"></div>
-      <span class="ltime">${l.time}</span>
-      <span class="lname">${e.label}</span>
-      <span class="lint">${l.intensity}/5</span>
+      <span class="ltime">${l.time}</span><span class="lname">${e.label}</span><span class="lint">${l.intensity}/5</span>
       ${l.note?`<span class="lnote">${l.note}</span>`:''}
       <span class="ldel" onclick="deleteLog(${i})">✕</span>
     </div>`;
@@ -551,7 +725,6 @@ function deleteLog(i){ logs.splice(i,1); renderQuickGrid(); renderLogList(); aut
 // ─── SUMMARY ──────────────────────────────────────────────────────────────────
 function getLogAvg(key){ return avgArr(logs.filter(l=>l.emotion===key).map(l=>l.intensity)); }
 function getFinal(key){ if(overrides[key]!=null) return overrides[key]; const a=getLogAvg(key); return a!=null?Math.round(a):null; }
-
 function renderSummary(){
   document.getElementById('sum-justin').textContent=behaviors.justin||0;
   document.getElementById('sum-alba').textContent=behaviors.alba||0;
@@ -576,10 +749,8 @@ function renderSummary(){
     } else {
       const mv=overrides[e.key];
       return `<div class="sum-empty">
-        <div>
-          <div style="font-size:15px;font-weight:600;color:${e.color}">${e.label}</div>
-          <div style="font-size:12px;color:var(--text2)">Sin registros — se guardará como 1</div>
-        </div>
+        <div><div style="font-size:15px;font-weight:600;color:${e.color}">${e.label}</div>
+        <div style="font-size:12px;color:var(--text2)">Sin registros — se guardará como 1</div></div>
         ${mv!=null
           ?`<div class="adj-row" style="gap:8px">
               <button class="adj-btn" onclick="adjust('${e.key}',-1)">−</button>
@@ -599,8 +770,6 @@ function addAdj(key){ overrides[key]=1; renderSummary(); }
 // ─── BEHAVIORS ────────────────────────────────────────────────────────────────
 function tap(key){
   behaviors[key]=(behaviors[key]||0)+1; refreshTapUI(key); autoSave();
-  const btn=document.getElementById('tapbtn-'+key);
-  if(btn){ btn.style.opacity='.6'; setTimeout(()=>btn.style.opacity='1',150); }
   const f=document.getElementById('flash-'+key);
   if(f){ f.textContent='✓ Guardado'; setTimeout(()=>f.textContent='',2000); }
 }
@@ -615,8 +784,7 @@ function toggleTA(id){ const el=document.getElementById(id); el.style.display=el
 // ─── STRATEGIES ───────────────────────────────────────────────────────────────
 function renderStratList(){
   document.getElementById('strat-list').innerHTML=STRATEGIES.map(s=>{
-    const count=strategies[s.key]||0;
-    const notes=stratNotes[s.key]||[];
+    const count=strategies[s.key]||0, notes=stratNotes[s.key]||[];
     const stepsHtml=s.steps.map(st=>`
       <div class="strat-step">
         <div class="strat-letter" style="background:${s.color}">${st.l}</div>
@@ -647,9 +815,7 @@ function renderStratList(){
     </div>`;
   }).join('');
 }
-
 function toggleStrat(key){ document.getElementById('strat-body-'+key).classList.toggle('open'); }
-
 function tapStrat(key){
   const noteEl=document.getElementById('strat-note-'+key);
   const noteText=noteEl?noteEl.value.trim():'';
@@ -662,7 +828,6 @@ function tapStrat(key){
   const f=document.getElementById('flash-strat-'+key);
   if(f){ f.textContent='✓ Guardado'; setTimeout(()=>{ if(f) f.textContent=''; },2000); }
 }
-
 function undoStrat(key){
   if((strategies[key]||0)>0){
     strategies[key]--;
@@ -672,11 +837,9 @@ function undoStrat(key){
     if(body) body.classList.add('open');
   }
 }
-
 function deleteStratNote(key,i){
   if(stratNotes[key]){ stratNotes[key].splice(i,1); strategies[key]=Math.max(0,(strategies[key]||0)-1); autoSave(); renderStratList();
-    const body=document.getElementById('strat-body-'+key);
-    if(body) body.classList.add('open');
+    document.getElementById('strat-body-'+key)?.classList.add('open');
   }
 }
 
@@ -692,9 +855,7 @@ function renderHistorial(){
     if(e.behaviors?.alba) chips+=`<span class="chip c-alba">Voz Alba ×${e.behaviors.alba}</span>`;
     const stratTotal=Object.values(e.strategies||{}).reduce((a,b)=>a+b,0);
     if(stratTotal>0) chips+=`<span class="chip c-strat">Estrategias ×${stratTotal}</span>`;
-    const notes=Object.entries(e.comments||{})
-      .filter(([,v])=>v&&v!=='No registrado este día')
-      .map(([k,v])=>`${cap(k)}: ${v}`).join(' · ');
+    const notes=Object.entries(e.comments||{}).filter(([,v])=>v&&v!=='No registrado este día').map(([k,v])=>`${cap(k)}: ${v}`).join(' · ');
     return `<div class="hist-entry" onclick="editEntry('${e.date}')">
       <div class="hist-date">${ds}</div>
       <div class="hist-chips">${chips||'<span style="font-size:13px;color:var(--text2)">Sin datos</span>'}</div>
@@ -728,9 +889,13 @@ function buildMail(from,to,filtered,forBev){
   const days=filtered.length;
   const avg=arr=>{ const a=avgArr(arr); return a!=null?a.toFixed(1):'-'; };
   const n=v=>(v!=null&&v!=='')?v:'-';
+  const sheetUrl=getSheetUrl();
   let b=forBev
     ?`Hola Bev,%0A%0ATe comparto mi registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''} registrado${days!==1?'s':''}).%0A%0A`
     :`Hola,%0A%0AAquí tienes tu registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''}).%0A%0A`;
+  if(sheetUrl){
+    b+=`📊 VER REPORTE EN VIVO:%0A${sheetUrl}%0A%0A`;
+  }
   b+=`════════════════════════════%0ARESUMEN DEL PERÍODO%0A════════════════════════════%0A%0A`;
   b+=`EMOCIONES (promedio · registros)%0A────────────────────────────%0A`;
   EMOTIONS.forEach(e=>{ const c=emoCounts[e.key]; b+=`  ${e.label.padEnd(16)} ${avg(emoVals[e.key])} / 5${c>0?`  (${c} registro${c>1?'s':''})`:''}%0A`; });
@@ -745,7 +910,6 @@ function buildMail(from,to,filtered,forBev){
     b+=`${fmtShort(e.date).padEnd(11)} | ${String(n(e.emotions?.gratitud)).padEnd(4)} | ${String(n(e.emotions?.orgullo)).padEnd(4)} | ${String(n(e.emotions?.autocompasion)).padEnd(4)} | ${String(n(e.emotions?.tristeza)).padEnd(4)} | ${String(n(e.emotions?.ansiedad)).padEnd(4)} | ${String(n(e.emotions?.culpa)).padEnd(4)} | ${String(n(e.emotions?.enfado)).padEnd(4)} | ${String(e.behaviors?.justin||0).padEnd(6)} | ${String(e.behaviors?.alba||0).padEnd(4)} | ${String(e.strategies?.tipp||0).padEnd(4)} | ${String(e.strategies?.mindfulness||0).padEnd(4)} | ${String(e.strategies?.stop||0).padEnd(4)} | ${e.strategies?.dearman||0}%0A`;
     const nl=Object.entries(e.comments||{}).filter(([,v])=>v&&v!=='No registrado este día').map(([k,v])=>`${cap(k)}: ${v}`);
     if(nl.length) b+=`  Notas: ${nl.join(' / ')}%0A`;
-    // Strategy notes
     STRATEGIES.forEach(s=>{ const sn=e.stratNotes?.[s.key]; if(sn&&sn.length) b+=`  ${s.label}: ${sn.map(n=>n.text?`${n.time} — ${n.text}`:n.time).join('; ')}%0A`; });
   });
   b+=`%0A%0A${forBev?`Quedo a tu disposición para revisarlo en nuestra próxima sesión.%0A%0AUn abrazo,`:`Guardado para tu referencia.`}`;
@@ -764,17 +928,12 @@ function openMail(who){
 
 // ─── EXPORT / IMPORT ──────────────────────────────────────────────────────────
 function exportData(){
-  const json=JSON.stringify(entries,null,2);
-  const blob=new Blob([json],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`alba-backup-${dateStr(new Date())}.json`;
-  a.click();
+  const blob=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`alba-backup-${dateStr(new Date())}.json`; a.click();
 }
-
 function importData(){
-  const input=document.createElement('input');
-  input.type='file'; input.accept='.json';
+  const input=document.createElement('input'); input.type='file'; input.accept='.json';
   input.onchange=e=>{
     const file=e.target.files[0]; if(!file) return;
     const reader=new FileReader();
@@ -783,8 +942,7 @@ function importData(){
         const imported=JSON.parse(ev.target.result);
         if(!Array.isArray(imported)) throw new Error();
         imported.forEach(imp=>{ const idx=entries.findIndex(en=>en.date===imp.date); if(idx>=0) entries[idx]=imp; else entries.push(imp); });
-        persist();
-        alert(`✓ ${imported.length} registro${imported.length!==1?'s':''} importado${imported.length!==1?'s':''}. Reinicia la app para ver los cambios.`);
+        persist(); alert(`✓ ${imported.length} registro${imported.length!==1?'s':''} importado${imported.length!==1?'s':''}.`);
         loadDay(workDate); renderHistorial(); renderReport();
       } catch(e){ alert('Error: el archivo no es válido.'); }
     };
@@ -807,26 +965,22 @@ function renderReport(){
       <div class="stat-card"><div class="stat-val">${totals.justin}</div><div class="stat-lbl">Disc. Justin</div></div>
       <div class="stat-card"><div class="stat-val">${totals.alba}</div><div class="stat-lbl">Voz Alba</div></div>
     </div>
-    <div class="stat-grid-2">
-      ${EMOTIONS.map(e=>`<div class="stat-card">
-        <div class="stat-val" style="color:${e.dot}">${avg(emoVals[e.key])}</div>
-        <div class="stat-lbl">${e.label}</div>
-        ${emoCounts[e.key]>0?`<div class="stat-cnt">${emoCounts[e.key]} registro${emoCounts[e.key]>1?'s':''}</div>`:''}
-      </div>`).join('')}
-    </div>
+    <div class="stat-grid-2">${EMOTIONS.map(e=>`<div class="stat-card">
+      <div class="stat-val" style="color:${e.dot}">${avg(emoVals[e.key])}</div>
+      <div class="stat-lbl">${e.label}</div>
+      ${emoCounts[e.key]>0?`<div class="stat-cnt">${emoCounts[e.key]} registro${emoCounts[e.key]>1?'s':''}</div>`:''}
+    </div>`).join('')}</div>
     <div class="section-label" style="margin-bottom:10px">Estrategias usadas</div>
-    <div class="stat-grid-2" style="margin-bottom:16px">
-      ${STRATEGIES.map(s=>`<div class="stat-card">
-        <div class="stat-val" style="color:${s.color}">${stratTotals[s.key]}</div>
-        <div class="stat-lbl">${s.icon} ${s.label}</div>
-      </div>`).join('')}
-    </div>
+    <div class="stat-grid-2" style="margin-bottom:16px">${STRATEGIES.map(s=>`<div class="stat-card">
+      <div class="stat-val" style="color:${s.color}">${stratTotals[s.key]}</div>
+      <div class="stat-lbl">${s.icon} ${s.label}</div>
+    </div>`).join('')}</div>
     <div class="legend">
       ${EMOTIONS.map(e=>`<span><span class="ldot-sq" style="background:${e.dot}"></span>${e.label}</span>`).join('')}
       <span><span class="ldot-sq" style="background:#AFA9EC"></span>Disc. Justin</span>
       <span><span class="ldot-sq" style="background:#F0997B"></span>Voz Alba</span>
     </div>
-    <div class="chart-wrap"><canvas id="rpt-chart" role="img" aria-label="Evolución emocional">Gráfico de evolución.</canvas></div>`;
+    <div class="chart-wrap"><canvas id="rpt-chart" role="img" aria-label="Evolución emocional">Gráfico.</canvas></div>`;
   const ordered=[...filtered].reverse();
   const labels=ordered.map(e=>fmtShort(e.date));
   const datasets=[
@@ -856,6 +1010,8 @@ function init(){
   document.getElementById('date-to').value=dateStr(today);
   renderReport();
   scheduleMidnight();
+  // Init Google Auth after library loads
+  window.addEventListener('load', ()=>{ setTimeout(initGoogleAuth, 500); });
 }
 
 init();
