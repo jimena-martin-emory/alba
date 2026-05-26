@@ -14,170 +14,168 @@
       --bg:#faf7f4; --bg2:#f2ede8; --card:#ffffff;
       --border:rgba(61,28,0,0.12); --border2:rgba(61,28,0,0.22);
       --text:#2a1400; --text2:#7a5a40; --text3:#b09070;
-      --orange-dark:#E86848; --radius:14px; --radius-sm:8px;
+      --accent:#E86848; --radius:14px; --radius-sm:8px;
     }
     @media (prefers-color-scheme:dark){
-      :root{--bg:#1a1008;--bg2:#261808;--card:#2a1a08;
-        --border:rgba(250,200,150,0.12);--border2:rgba(250,200,150,0.22);
-        --text:#faf0e0;--text2:#c8a070;--text3:#886040;}
+      :root{ --bg:#1a1008; --bg2:#261808; --card:#2a1a08;
+        --border:rgba(250,200,150,0.12); --border2:rgba(250,200,150,0.22);
+        --text:#faf0e0; --text2:#c8a070; --text3:#886040; }
     }
-    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:env(safe-area-inset-bottom);}
+    *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+    body{ font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:env(safe-area-inset-bottom); }
 
     /* HEADER */
-    .header{background:linear-gradient(180deg,#F7C59F 0%,#F4956A 55%,#E86848 100%);}
-    .header-inner{padding:16px 20px 14px;padding-top:calc(16px + env(safe-area-inset-top));display:flex;align-items:center;gap:12px;}
-    .header-icon{width:42px;height:42px;background:#3d1c08;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
-    .header-icon svg{width:42px;height:42px;}
-    .header-title{font-size:22px;font-weight:600;color:#3d1c00;letter-spacing:0.5px;}
-    .header-sub{font-size:12px;color:#7a3a10;}
+    .header{ background:linear-gradient(180deg,#F7C59F 0%,#F4956A 55%,#E86848 100%); }
+    .header-inner{ padding:16px 20px 14px; padding-top:calc(16px + env(safe-area-inset-top)); display:flex; align-items:center; gap:12px; }
+    .header-icon{ width:42px; height:42px; background:#3d1c08; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden; }
+    .header-icon svg{ width:42px; height:42px; }
+    .header-title{ font-size:22px; font-weight:600; color:#3d1c00; }
+    .header-sub{ font-size:12px; color:#7a3a10; }
 
     /* TABS */
-    .tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
-    .tab{flex:1;padding:10px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
-    .tab.active{color:var(--orange-dark);border-bottom-color:var(--orange-dark);}
-    .tab-icon{font-size:17px;display:block;margin-bottom:2px;}
-    .view{display:none;padding:16px;} .view.active{display:block;}
+    .tabs{ display:flex; background:var(--bg2); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+    .tab{ flex:1; padding:10px 4px; text-align:center; font-size:11px; font-weight:500; color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; }
+    .tab.active{ color:var(--accent); border-bottom-color:var(--accent); }
+    .tab-icon{ font-size:17px; display:block; margin-bottom:2px; }
+    .view{ display:none; padding:16px; } .view.active{ display:block; }
 
     /* SUBTABS */
-    .subtabs{display:flex;gap:6px;margin-bottom:16px;}
-    .subtab{flex:1;padding:8px 4px;text-align:center;font-size:11px;font-weight:500;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);color:var(--text2);background:transparent;transition:all .15s;}
-    .subtab.active{border-color:var(--orange-dark);color:var(--orange-dark);background:var(--bg2);}
-    .subview{display:none;} .subview.active{display:block;}
+    .subtabs{ display:flex; gap:5px; margin-bottom:16px; flex-wrap:wrap; }
+    .subtab{ flex:1; min-width:60px; padding:8px 4px; text-align:center; font-size:11px; font-weight:500; cursor:pointer; border-radius:var(--radius-sm); border:1px solid var(--border); color:var(--text2); background:transparent; transition:all .15s; }
+    .subtab.active{ border-color:var(--accent); color:var(--accent); background:var(--bg2); }
+    .subview{ display:none; } .subview.active{ display:block; }
 
     /* UTILITIES */
-    .section-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
-    .storage-note{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border-radius:var(--radius-sm);margin-bottom:16px;}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;}
-    .empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:15px;}
-    .badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap;}
-    .badge-today{background:#EAF3DE;color:#3B6D11;} .badge-past{background:#FAEEDA;color:#854F0B;}
-    .banner{font-size:12px;border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:14px;display:none;align-items:flex-start;gap:8px;}
-    .banner.show{display:flex;} .banner-warn{color:#854F0B;background:#FAEEDA;}
-    .autosave-flash{font-size:11px;color:#3B6D11;text-align:right;margin-top:6px;height:16px;transition:opacity .3s;}
+    .section-label{ font-size:11px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; }
+    .storage-note{ font-size:12px; color:var(--text2); display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--bg2); border-radius:var(--radius-sm); margin-bottom:16px; }
+    .card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; }
+    .empty{ text-align:center; padding:40px 20px; color:var(--text2); font-size:15px; line-height:1.6; }
+    .badge{ font-size:11px; padding:3px 10px; border-radius:20px; font-weight:600; white-space:nowrap; }
+    .badge-today{ background:#EAF3DE; color:#3B6D11; } .badge-past{ background:#FAEEDA; color:#854F0B; }
+    .banner{ font-size:12px; border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:14px; display:none; align-items:flex-start; gap:8px; }
+    .banner.show{ display:flex; } .banner-warn{ color:#854F0B; background:#FAEEDA; }
+    .flash{ font-size:11px; color:#3B6D11; text-align:right; margin-top:6px; height:16px; }
 
     /* DATE BAR */
-    .date-bar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:16px;}
-    .date-bar label{font-size:13px;color:var(--text2);white-space:nowrap;}
-    .date-bar input[type=date]{border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);flex:1;}
+    .date-bar{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; margin-bottom:16px; }
+    .date-bar label{ font-size:13px; color:var(--text2); white-space:nowrap; }
+    .date-bar input[type=date]{ border:1px solid var(--border); border-radius:var(--radius-sm); padding:6px 8px; font-size:13px; font-family:inherit; background:var(--bg); color:var(--text); flex:1; }
 
     /* EMOTION GRID */
-    .emo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
-    .emo-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;cursor:pointer;text-align:center;transition:transform .1s;user-select:none;-webkit-user-select:none;}
-    .emo-btn:active{transform:scale(.96);}
-    .emo-btn .emo-name{font-size:16px;font-weight:600;margin-bottom:4px;}
-    .emo-btn .emo-count{font-size:11px;color:var(--text2);}
+    .emo-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:16px; }
+    .emo-btn{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 12px; cursor:pointer; text-align:center; user-select:none; -webkit-user-select:none; transition:transform .1s; }
+    .emo-btn:active{ transform:scale(.96); }
+    .emo-name{ font-size:16px; font-weight:600; margin-bottom:4px; }
+    .emo-count{ font-size:11px; color:var(--text2); }
 
     /* INTENSITY PANEL */
-    .int-panel{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
-    .int-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px;}
-    .int-row{display:flex;gap:8px;margin-bottom:12px;}
-    .int-btn{flex:1;padding:12px 4px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2);font-size:16px;font-weight:600;cursor:pointer;color:var(--text2);text-align:center;transition:all .1s;}
-    .int-btn.sel{color:white;border-color:transparent;}
-    textarea.note-area{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:inherit;color:var(--text);background:var(--bg);resize:none;height:70px;margin-bottom:12px;}
-    textarea.note-area:focus{outline:none;border-color:var(--orange-dark);}
-    .btn-row{display:flex;gap:8px;}
-    .btn-confirm{flex:2;padding:12px;border-radius:var(--radius-sm);border:none;font-size:15px;font-weight:600;cursor:pointer;color:white;}
-    .btn-cancel{flex:1;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:transparent;font-size:15px;cursor:pointer;color:var(--text2);}
+    .int-panel{ background:var(--card); border:1px solid var(--border2); border-radius:var(--radius); padding:16px; margin-bottom:14px; }
+    .int-title{ font-size:15px; font-weight:600; color:var(--text); margin-bottom:12px; }
+    .int-row{ display:flex; gap:8px; margin-bottom:12px; }
+    .int-btn{ flex:1; padding:12px 4px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--bg2); font-size:16px; font-weight:600; cursor:pointer; color:var(--text2); text-align:center; transition:all .1s; }
+    .int-btn.sel{ color:white; border-color:transparent; }
+    textarea.ta{ width:100%; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; font-size:14px; font-family:inherit; color:var(--text); background:var(--bg); resize:none; height:70px; margin-bottom:12px; }
+    textarea.ta:focus{ outline:none; border-color:var(--accent); }
+    .btn-row{ display:flex; gap:8px; }
+    .btn-ok{ flex:2; padding:12px; border-radius:var(--radius-sm); border:none; font-size:15px; font-weight:600; cursor:pointer; color:white; }
+    .btn-no{ flex:1; padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border2); background:transparent; font-size:15px; cursor:pointer; color:var(--text2); }
 
     /* LOG LIST */
-    .log-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--bg2);margin-bottom:8px;flex-wrap:wrap;}
-    .log-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-    .log-time{color:var(--text3);font-size:11px;flex-shrink:0;}
-    .log-name{font-weight:600;color:var(--text);font-size:14px;}
-    .log-int{color:var(--text2);font-size:12px;}
-    .log-note-text{color:var(--text2);font-size:11px;font-style:italic;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .log-del{margin-left:auto;cursor:pointer;color:var(--text3);flex-shrink:0;font-size:18px;padding:4px;}
+    .log-item{ display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:var(--radius-sm); background:var(--bg2); margin-bottom:8px; flex-wrap:wrap; }
+    .ldot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+    .ltime{ color:var(--text3); font-size:11px; flex-shrink:0; }
+    .lname{ font-weight:600; color:var(--text); font-size:14px; }
+    .lint{ color:var(--text2); font-size:12px; }
+    .lnote{ color:var(--text2); font-size:11px; font-style:italic; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ldel{ margin-left:auto; cursor:pointer; color:var(--text3); flex-shrink:0; font-size:18px; padding:4px; }
 
     /* SUMMARY */
-    .sum-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;}
-    .sum-name{font-size:16px;font-weight:600;}
-    .sum-badge{font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
-    .sum-detail{font-size:12px;color:var(--text2);margin-bottom:8px;}
-    .sum-notes{font-size:11px;color:var(--text2);font-style:italic;margin-bottom:10px;}
-    .adj-row{display:flex;gap:8px;align-items:center;}
-    .adj-label{font-size:12px;color:var(--text2);}
-    .adj-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:transparent;font-size:18px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;}
-    .adj-val{font-size:16px;font-weight:600;min-width:24px;text-align:center;color:var(--text);}
-    .sum-empty{background:var(--bg2);border:1px dashed var(--border2);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
-    .btn-add{font-size:13px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:transparent;cursor:pointer;color:var(--text2);white-space:nowrap;}
-    .save-btn{width:100%;padding:15px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);font-size:16px;font-weight:600;color:var(--text);cursor:pointer;transition:background .15s;margin-top:8px;}
-    .save-btn.saved{border-color:#3B6D11;color:#3B6D11;background:#EAF3DE;}
+    .sum-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:6px; }
+    .sum-name{ font-size:16px; font-weight:600; }
+    .sum-badge{ font-size:12px; font-weight:600; padding:4px 12px; border-radius:20px; }
+    .sum-detail{ font-size:12px; color:var(--text2); margin-bottom:8px; }
+    .sum-notes{ font-size:11px; color:var(--text2); font-style:italic; margin-bottom:10px; }
+    .adj-row{ display:flex; gap:8px; align-items:center; }
+    .adj-label{ font-size:12px; color:var(--text2); }
+    .adj-btn{ width:32px; height:32px; border-radius:50%; border:1px solid var(--border2); background:transparent; font-size:18px; cursor:pointer; color:var(--text); display:flex; align-items:center; justify-content:center; }
+    .adj-val{ font-size:16px; font-weight:600; min-width:24px; text-align:center; }
+    .sum-empty{ background:var(--bg2); border:1px dashed var(--border2); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+    .btn-add{ font-size:13px; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid var(--border2); background:transparent; cursor:pointer; color:var(--text2); white-space:nowrap; }
+    .save-btn{ width:100%; padding:15px; background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); font-size:16px; font-weight:600; color:var(--text); cursor:pointer; margin-top:8px; transition:all .15s; }
+    .save-btn.saved{ border-color:#3B6D11; color:#3B6D11; background:#EAF3DE; }
 
-    /* BEHAVIOR TAP */
-    .beh-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;}
-    .beh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-    .beh-name{font-size:16px;font-weight:600;color:var(--text);}
-    .beh-desc{font-size:12px;color:var(--text2);margin-top:2px;}
-    .beh-count{font-size:28px;font-weight:700;min-width:40px;text-align:right;}
-    .tap-btn{width:100%;padding:16px;border-radius:var(--radius-sm);border:none;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .08s,opacity .1s;user-select:none;-webkit-user-select:none;}
-    .tap-btn:active{transform:scale(.96);opacity:.85;}
-    .tap-justin{background:#EEEDFE;color:#3C3489;} .tap-alba{background:#FAECE7;color:#712B13;}
-    .tap-dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;margin-bottom:6px;}
-    .tap-dot{width:12px;height:12px;border-radius:50%;}
-    .dot-justin{background:#7F77DD;} .dot-alba{background:#D85A30;}
-    .beh-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
-    .link-sm{font-size:13px;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:4px 0;}
+    /* BEHAVIORS */
+    .beh-card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; }
+    .beh-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .beh-name{ font-size:16px; font-weight:600; color:var(--text); }
+    .beh-desc{ font-size:12px; color:var(--text2); margin-top:2px; }
+    .beh-count{ font-size:28px; font-weight:700; min-width:40px; text-align:right; }
+    .tap-btn{ width:100%; padding:16px; border-radius:var(--radius-sm); border:none; font-size:16px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .08s,opacity .1s; user-select:none; -webkit-user-select:none; }
+    .tap-btn:active{ transform:scale(.96); opacity:.85; }
+    .tap-justin{ background:#EEEDFE; color:#3C3489; } .tap-alba{ background:#FAECE7; color:#712B13; }
+    .tap-dots{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; margin-bottom:6px; }
+    .tap-dot{ width:12px; height:12px; border-radius:50%; }
+    .dot-justin{ background:#7F77DD; } .dot-alba{ background:#D85A30; }
+    .beh-footer{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+    .link-sm{ font-size:13px; color:var(--text2); cursor:pointer; display:inline-flex; align-items:center; gap:4px; padding:4px 0; }
 
     /* STRATEGIES */
-    .strat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;}
-    .strat-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;}
-    .strat-left{display:flex;align-items:center;gap:12px;}
-    .strat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-    .strat-name{font-size:16px;font-weight:600;color:var(--text);}
-    .strat-tagline{font-size:12px;color:var(--text2);margin-top:2px;}
-    .strat-count-badge{font-size:22px;font-weight:700;min-width:36px;text-align:right;}
-    .strat-body{display:none;padding:0 16px 14px;}
-    .strat-body.open{display:block;}
-    .strat-steps{margin-bottom:12px;}
-    .strat-step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
-    .strat-letter{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;margin-top:1px;}
-    .strat-step-text{font-size:13px;color:var(--text2);line-height:1.4;flex:1;}
-    .strat-step-title{font-weight:600;color:var(--text);display:block;margin-bottom:2px;}
-    .strat-tap-btn{width:100%;padding:14px;border-radius:var(--radius-sm);border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .08s,opacity .1s;user-select:none;-webkit-user-select:none;}
-    .strat-tap-btn:active{transform:scale(.96);opacity:.85;}
-    .strat-dots{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;margin-bottom:4px;}
-    .strat-dot{width:10px;height:10px;border-radius:50%;}
-    .strat-undo{font-size:12px;color:var(--text3);cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-top:6px;}
+    .strat-card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:12px; overflow:hidden; }
+    .strat-header{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer; }
+    .strat-left{ display:flex; align-items:center; gap:12px; }
+    .strat-icon{ width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+    .strat-name{ font-size:16px; font-weight:600; color:var(--text); }
+    .strat-tagline{ font-size:12px; color:var(--text2); margin-top:2px; }
+    .strat-count{ font-size:22px; font-weight:700; min-width:36px; text-align:right; }
+    .strat-body{ display:none; padding:0 16px 16px; }
+    .strat-body.open{ display:block; }
+    .strat-step{ display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+    .strat-letter{ width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white; flex-shrink:0; margin-top:1px; }
+    .strat-step-text{ font-size:13px; color:var(--text2); line-height:1.4; flex:1; }
+    .strat-step-title{ font-weight:600; color:var(--text); display:block; margin-bottom:2px; }
+    .strat-tap-btn{ width:100%; padding:14px; border-radius:var(--radius-sm); border:none; font-size:15px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; user-select:none; -webkit-user-select:none; transition:transform .08s,opacity .1s; }
+    .strat-tap-btn:active{ transform:scale(.96); opacity:.85; }
+    .strat-undo{ font-size:12px; color:var(--text3); cursor:pointer; display:inline-flex; align-items:center; gap:4px; margin-top:8px; }
 
     /* HISTORIAL */
-    .hist-entry{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;cursor:pointer;}
-    .hist-date{font-size:12px;color:var(--text2);margin-bottom:8px;}
-    .hist-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
-    .chip{font-size:12px;padding:4px 12px;border-radius:20px;font-weight:600;}
+    .hist-entry{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; cursor:pointer; transition:border-color .15s; }
+    .hist-entry:hover{ border-color:var(--border2); }
+    .hist-date{ font-size:12px; color:var(--text2); margin-bottom:8px; }
+    .hist-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+    .chip{ font-size:12px; padding:4px 12px; border-radius:20px; font-weight:600; }
     .c-gratitud{background:#EAF3DE;color:#2d5a0e;} .c-orgullo{background:#E6F1FB;color:#154d87;}
     .c-autocompasion{background:#EEEDFE;color:#3d3496;} .c-tristeza{background:#E1F5EE;color:#0a5a42;}
     .c-ansiedad{background:#FAEEDA;color:#6b3e08;} .c-culpa{background:#FBEAF0;color:#7a2644;}
     .c-enfado{background:#FCEBEB;color:#822020;} .c-justin{background:#EEEDFE;color:#3d3496;}
     .c-alba{background:#FAECE7;color:#712B13;} .c-strat{background:#FFF3E0;color:#8a4a00;}
-    .hist-notes{font-size:12px;color:var(--text2);font-style:italic;margin-top:4px;}
-    .hist-hint{font-size:11px;color:var(--text3);margin-top:6px;}
+    .hist-notes{ font-size:12px; color:var(--text2); font-style:italic; margin-top:4px; }
+    .hist-hint{ font-size:11px; color:var(--text3); margin-top:6px; }
 
     /* REPORT */
-    .rpt-controls{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
-    .rpt-controls label{font-size:13px;color:var(--text2);}
-    .rpt-controls input[type=date]{border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;font-size:13px;font-family:inherit;background:var(--card);color:var(--text);flex:1;}
-    .send-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;}
-    .send-box-label{font-size:12px;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-    .send-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
-    .send-btn{padding:10px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border:1px solid;}
-    .send-bev{background:#E6F1FB;color:#154d87;border-color:#B5D4F4;} .send-me{background:#EAF3DE;color:#2d5a0e;border-color:#C0DD97;}
-    .send-note{font-size:11px;color:var(--text3);display:flex;align-items:flex-start;gap:5px;}
-    .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center;}
-    .stat-val{font-size:26px;font-weight:700;color:var(--text);}
-    .stat-lbl{font-size:11px;color:var(--text2);margin-top:2px;}
-    .stat-cnt{font-size:10px;color:var(--text3);margin-top:2px;}
-    .stat-grid-emo{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
-    .chart-wrap{position:relative;width:100%;height:220px;margin-bottom:16px;}
-    .legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
-    .legend span{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2);}
-    .legend-dot{width:10px;height:10px;border-radius:2px;display:inline-block;}
+    .rpt-controls{ display:flex; gap:8px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+    .rpt-controls label{ font-size:13px; color:var(--text2); }
+    .rpt-controls input[type=date]{ border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px; font-size:13px; font-family:inherit; background:var(--card); color:var(--text); flex:1; }
+    .send-box{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:12px; }
+    .send-box-label{ font-size:12px; color:var(--text2); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+    .send-btns{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+    .send-btn{ padding:10px 14px; border-radius:var(--radius-sm); font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; border:1px solid; }
+    .send-bev{ background:#E6F1FB; color:#154d87; border-color:#B5D4F4; }
+    .send-me{ background:#EAF3DE; color:#2d5a0e; border-color:#C0DD97; }
+    .send-note{ font-size:11px; color:var(--text3); display:flex; align-items:flex-start; gap:5px; }
+    .stat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+    .stat-grid-2{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:16px; }
+    .stat-card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; text-align:center; }
+    .stat-val{ font-size:26px; font-weight:700; color:var(--text); }
+    .stat-lbl{ font-size:11px; color:var(--text2); margin-top:2px; }
+    .stat-cnt{ font-size:10px; color:var(--text3); margin-top:2px; }
+    .chart-wrap{ position:relative; width:100%; height:220px; margin-bottom:16px; }
+    .legend{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+    .legend span{ display:flex; align-items:center; gap:4px; font-size:11px; color:var(--text2); }
+    .ldot-sq{ width:10px; height:10px; border-radius:2px; display:inline-block; }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-inner">
     <div class="header-icon">
@@ -203,31 +201,27 @@
   </div>
 </div>
 
-<!-- MAIN TABS -->
 <div class="tabs">
   <div class="tab active" onclick="switchTab('registrar')"><span class="tab-icon">✦</span>Registrar</div>
   <div class="tab" onclick="switchTab('historial')"><span class="tab-icon">≡</span>Historial</div>
   <div class="tab" onclick="switchTab('reporte')"><span class="tab-icon">◎</span>Reporte</div>
 </div>
 
-<!-- ══ REGISTRAR ══ -->
+<!-- REGISTRAR -->
 <div id="view-registrar" class="view active">
-  <div class="storage-note">🔒 Los datos se guardan solo en este dispositivo.</div>
-
+  <div class="storage-note">🔒 Datos guardados en este dispositivo.</div>
   <div class="date-bar">
     <label>📅 Fecha</label>
     <input type="date" id="working-date" onchange="onDateChange()">
     <span id="date-badge" class="badge badge-today">Hoy</span>
   </div>
-
   <div class="subtabs">
     <div class="subtab active" onclick="switchSub('rapido')">⚡ Rápido</div>
     <div class="subtab" onclick="switchSub('resumen')">☀ Resumen</div>
-    <div class="subtab" onclick="switchSub('comportamiento')">↯ Hábitos</div>
+    <div class="subtab" onclick="switchSub('habitos')">↯ Hábitos</div>
     <div class="subtab" onclick="switchSub('estrategias')">🧠 Estrategias</div>
   </div>
 
-  <!-- Registro rápido -->
   <div id="sub-rapido" class="subview active">
     <div id="banner" class="banner banner-warn"><span>⚠</span><span id="banner-text"></span></div>
     <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Toca la emoción que sientes ahora.</p>
@@ -239,7 +233,6 @@
     </div>
   </div>
 
-  <!-- Resumen -->
   <div id="sub-resumen" class="subview">
     <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Revisa los promedios, ajusta si quieres, y guarda.</p>
     <div id="sum-list"></div>
@@ -253,78 +246,81 @@
     <button class="save-btn" id="save-btn" onclick="saveEntry()">💾 Guardar registro</button>
   </div>
 
-  <!-- Comportamientos -->
-  <div id="sub-comportamiento" class="subview">
+  <div id="sub-habitos" class="subview">
     <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Toca cada vez que ocurra — se guarda automáticamente.</p>
     <div class="beh-card">
       <div class="beh-top">
         <div><div class="beh-name">Discusión con Justin</div><div class="beh-desc">Toca cada vez que suceda</div></div>
         <div class="beh-count" id="badge-justin" style="color:#534AB7">0</div>
       </div>
-      <button class="tap-btn tap-justin" id="tapbtn-justin" onclick="tap('justin')">👆 Ocurrió ahora</button>
+      <button class="tap-btn tap-justin" onclick="tap('justin')">👆 Ocurrió ahora</button>
       <div class="tap-dots" id="dots-justin"></div>
       <div class="beh-footer">
-        <span class="link-sm" onclick="toggleNote('justin')">💬 Añadir nota</span>
+        <span class="link-sm" onclick="toggleTA('note-justin')">💬 Añadir nota</span>
         <span class="link-sm" onclick="undoTap('justin')">↩ Deshacer</span>
       </div>
-      <textarea class="note-area" id="note-justin" placeholder="¿Qué lo desencadenó?" style="display:none;margin-top:10px;"></textarea>
-      <div class="autosave-flash" id="flash-justin"></div>
+      <textarea class="ta" id="note-justin" placeholder="¿Qué lo desencadenó?" style="display:none;margin-top:10px;"></textarea>
+      <div class="flash" id="flash-justin"></div>
     </div>
     <div class="beh-card">
       <div class="beh-top">
         <div><div class="beh-name">Levantar la voz a Alba</div><div class="beh-desc">Toca cada vez que suceda</div></div>
         <div class="beh-count" id="badge-alba" style="color:#993C1D">0</div>
       </div>
-      <button class="tap-btn tap-alba" id="tapbtn-alba" onclick="tap('alba')">👆 Ocurrió ahora</button>
+      <button class="tap-btn tap-alba" onclick="tap('alba')">👆 Ocurrió ahora</button>
       <div class="tap-dots" id="dots-alba"></div>
       <div class="beh-footer">
-        <span class="link-sm" onclick="toggleNote('alba')">💬 Añadir nota</span>
+        <span class="link-sm" onclick="toggleTA('note-alba')">💬 Añadir nota</span>
         <span class="link-sm" onclick="undoTap('alba')">↩ Deshacer</span>
       </div>
-      <textarea class="note-area" id="note-alba" placeholder="¿Qué lo desencadenó?" style="display:none;margin-top:10px;"></textarea>
-      <div class="autosave-flash" id="flash-alba"></div>
+      <textarea class="ta" id="note-alba" placeholder="¿Qué lo desencadenó?" style="display:none;margin-top:10px;"></textarea>
+      <div class="flash" id="flash-alba"></div>
     </div>
   </div>
 
-  <!-- Estrategias -->
   <div id="sub-estrategias" class="subview">
-    <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Toca "Usé esta estrategia" cada vez que la practiques — se guarda automáticamente.</p>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:14px;">Toca "Usé esta estrategia" cada vez que la practiques.</p>
     <div id="strat-list"></div>
   </div>
 </div>
 
-<!-- ══ HISTORIAL ══ -->
+<!-- HISTORIAL -->
 <div id="view-historial" class="view">
-  <div id="hist-content"><div class="empty">Aún no hay registros.<br>¡Empieza hoy!</div></div>
+  <div id="hist-content"><div class="empty">Aún no hay registros.<br>¡Empieza hoy! 🌅</div></div>
 </div>
 
-<!-- ══ REPORTE ══ -->
+<!-- REPORTE -->
 <div id="view-reporte" class="view">
   <div class="rpt-controls">
     <label>Desde</label><input type="date" id="date-from" onchange="renderReport()">
     <label>Hasta</label><input type="date" id="date-to" onchange="renderReport()">
   </div>
-  <div class="send-box" style="margin-bottom:12px;">
-    <div class="send-box-label">💾 Copia de seguridad de tus datos</div>
+  <div class="send-box">
+    <div class="send-box-label">💾 Copia de seguridad</div>
     <div class="send-btns">
-      <button class="send-btn" style="background:#EAF3DE;color:#2d5a0e;border-color:#C0DD97;" onclick="exportData()">⬇ Exportar datos</button>
-      <button class="send-btn" style="background:#E6F1FB;color:#154d87;border-color:#B5D4F4;" onclick="importData()">⬆ Importar datos</button>
+      <button class="send-btn" style="background:#EAF3DE;color:#2d5a0e;border-color:#C0DD97;" onclick="exportData()">⬇ Exportar</button>
+      <button class="send-btn" style="background:#E6F1FB;color:#154d87;border-color:#B5D4F4;" onclick="importData()">⬆ Importar</button>
     </div>
-    <div class="send-note">ℹ Exporta regularmente para no perder tus registros. Guarda el archivo en iCloud Drive o en tu email.</div>
+    <div class="send-note">ℹ Exporta regularmente y guarda el archivo en tu email o iCloud Drive.</div>
   </div>
   <div class="send-box">
-    <div class="send-box-label">✉ Compartir por correo — resumen + tabla completa</div>
+    <div class="send-box-label">✉ Compartir por correo</div>
     <div class="send-btns">
       <button class="send-btn send-bev" onclick="openMail('bev')">⚕ Enviar a Bev</button>
       <button class="send-btn send-me" onclick="openMail('me')">👤 Enviarme a mí</button>
     </div>
-    <div class="send-note">ℹ El email incluye resumen y tabla día a día. No necesitas adjuntar nada.</div>
+    <div class="send-note">ℹ Incluye resumen y tabla día a día con estrategias.</div>
   </div>
   <div id="rpt-content"><div class="empty">Selecciona un rango para ver el reporte.</div></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
+// ─── SERVICE WORKER ───────────────────────────────────────────────────────────
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/alba/sw.js').catch(()=>{});
+}
+
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'emo_tracker_v1';
 
@@ -339,52 +335,43 @@ const EMOTIONS = [
 ];
 const EMO = Object.fromEntries(EMOTIONS.map(e=>[e.key,e]));
 const BEHAVIORS = [{key:'justin',label:'Discusión con Justin'},{key:'alba',label:'Voz alta a Alba'}];
-
 const STRATEGIES = [
-  {
-    key:'tipp', label:'TIPP', color:'#7B3FA0', bg:'#F3E8FF', dot:'#9B59B6',
+  { key:'tipp', label:'TIPP', color:'#7B3FA0', bg:'#F3E8FF', dot:'#9B59B6', icon:'🌊',
     tagline:'Cambia tu fisiología rápidamente',
-    icon:'🌊',
     steps:[
-      {letter:'T', title:'Temperature', text:'Agua fría en la cara o hielo en las manos para bajar la activación del sistema nervioso.'},
-      {letter:'I', title:'Intense exercise', text:'Ejercicio intenso por 20 minutos para quemar el exceso de adrenalina.'},
-      {letter:'P', title:'Paced breathing', text:'Respira despacio: inhala 4 seg, exhala 6 seg. La exhalación más larga activa el sistema de calma.'},
-      {letter:'P', title:'Progressive relaxation', text:'Tensa y relaja cada grupo muscular del cuerpo de pies a cabeza.'},
+      {l:'T',title:'Temperature',text:'Agua fría en la cara o hielo en las manos para bajar la activación del sistema nervioso.'},
+      {l:'I',title:'Intense exercise',text:'Ejercicio intenso por 20 minutos para quemar el exceso de adrenalina.'},
+      {l:'P',title:'Paced breathing',text:'Respira despacio: inhala 4 seg, exhala 6 seg. La exhalación más larga activa el sistema de calma.'},
+      {l:'P',title:'Progressive relaxation',text:'Tensa y relaja cada grupo muscular del cuerpo de pies a cabeza.'},
     ]
   },
-  {
-    key:'mindfulness', label:'Mindfulness', color:'#1a6b5e', bg:'#E0F5F1', dot:'#1D9E75',
+  { key:'mindfulness', label:'Mindfulness', color:'#1a6b5e', bg:'#E0F5F1', dot:'#1D9E75', icon:'🧘',
     tagline:'Observa, describe, participa',
-    icon:'🧘',
     steps:[
-      {letter:'O', title:'Observar', text:'Nota tu experiencia sin palabras. Deja que los pensamientos y emociones pasen como nubes.'},
-      {letter:'D', title:'Describir', text:'Pon palabras a lo que observas: "Siento tensión en el pecho", "Noto el pensamiento de que...".'},
-      {letter:'P', title:'Participar', text:'Sumérgete completamente en el momento presente sin autocrítica ni distracción.'},
+      {l:'O',title:'Observar',text:'Nota tu experiencia sin palabras. Deja que los pensamientos y emociones pasen como nubes.'},
+      {l:'D',title:'Describir',text:'Pon palabras a lo que observas: "Siento tensión en el pecho", "Noto el pensamiento de que...".'},
+      {l:'P',title:'Participar',text:'Sumérgete completamente en el momento presente sin autocrítica ni distracción.'},
     ]
   },
-  {
-    key:'stop', label:'STOP', color:'#C0392B', bg:'#FDEDEC', dot:'#E74C3C',
+  { key:'stop', label:'STOP', color:'#C0392B', bg:'#FDEDEC', dot:'#E74C3C', icon:'✋',
     tagline:'Pausa antes de reaccionar',
-    icon:'✋',
     steps:[
-      {letter:'S', title:'Stop', text:'Para. No actúes de forma impulsiva. Congela lo que estás haciendo.'},
-      {letter:'T', title:'Take a step back', text:'Toma distancia física o mental. Respira. No tienes que reaccionar ahora.'},
-      {letter:'O', title:'Observe', text:'Observa qué está pasando dentro y fuera de ti. ¿Qué piensas? ¿Qué sientes? ¿Qué está haciendo el otro?'},
-      {letter:'P', title:'Proceed mindfully', text:'Actúa con conciencia. Pregúntate: ¿qué quiero que pase? ¿qué haría útil la situación?'},
+      {l:'S',title:'Stop',text:'Para. No actúes de forma impulsiva. Congela lo que estás haciendo.'},
+      {l:'T',title:'Take a step back',text:'Toma distancia física o mental. Respira. No tienes que reaccionar ahora.'},
+      {l:'O',title:'Observe',text:'Observa qué está pasando dentro y fuera de ti. ¿Qué piensas? ¿Qué sientes?'},
+      {l:'P',title:'Proceed mindfully',text:'Actúa con conciencia. Pregúntate: ¿qué quiero que pase? ¿qué sería útil ahora?'},
     ]
   },
-  {
-    key:'dearman', label:'DEAR MAN', color:'#8a4a00', bg:'#FFF3E0', dot:'#E67E22',
+  { key:'dearman', label:'DEAR MAN', color:'#8a4a00', bg:'#FFF3E0', dot:'#E67E22', icon:'🗣️',
     tagline:'Pide lo que necesitas con eficacia',
-    icon:'🗣️',
     steps:[
-      {letter:'D', title:'Describe', text:'Describe la situación con hechos objetivos, sin juicios ni interpretaciones.'},
-      {letter:'E', title:'Express', text:'Expresa cómo te sientes usando "yo siento..." en lugar de "tú hiciste...".'},
-      {letter:'A', title:'Assert', text:'Pide claramente lo que quieres o di no claramente. No asumas que el otro adivina.'},
-      {letter:'R', title:'Reinforce', text:'Explica las consecuencias positivas de obtener lo que necesitas.'},
-      {letter:'M', title:'Mindful', text:'Mantén el foco en tu objetivo. Ignora ataques o desvíos del tema.'},
-      {letter:'A', title:'Appear confident', text:'Muestra seguridad con tu voz y postura, aunque no la sientas del todo.'},
-      {letter:'N', title:'Negotiate', text:'Sé flexible. Ofrece alternativas. Pregunta al otro qué solución propone.'},
+      {l:'D',title:'Describe',text:'Describe la situación con hechos objetivos, sin juicios.'},
+      {l:'E',title:'Express',text:'Expresa cómo te sientes: "Yo siento..." en lugar de "Tú hiciste...".'},
+      {l:'A',title:'Assert',text:'Pide claramente lo que quieres o di no claramente.'},
+      {l:'R',title:'Reinforce',text:'Explica las consecuencias positivas de obtener lo que necesitas.'},
+      {l:'M',title:'Mindful',text:'Mantén el foco en tu objetivo. Ignora ataques o desvíos.'},
+      {l:'A',title:'Appear confident',text:'Muestra seguridad con tu voz y postura.'},
+      {l:'N',title:'Negotiate',text:'Sé flexible. Ofrece alternativas. Pregunta qué solución propone el otro.'},
     ]
   },
 ];
@@ -395,8 +382,8 @@ let entries = [];
 try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); } catch(e) {}
 
 let workDate = dateStr(new Date());
-let logs = [], behaviors = {justin:0,alba:0}, strategies = {}, stratNotes = {}, overrides = {};
-let activeEmo = null, activeInt = null, rptChart = null;
+let logs=[], behaviors={justin:0,alba:0}, strategies={}, stratNotes={}, overrides={};
+let activeEmo=null, activeInt=null, rptChart=null;
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 function dateStr(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
@@ -405,33 +392,22 @@ function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
 function fmtLong(str){ return new Date(str+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}); }
 function fmtShort(str){ return new Date(str+'T12:00:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'}); }
 function fmtTime(){ return new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}); }
-function avgArr(arr){ return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:null; }
+function avgArr(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null; }
 
 // ─── PERSISTENCE ──────────────────────────────────────────────────────────────
 function persist(){
   entries.sort((a,b)=>a.date>b.date?-1:1);
-  try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(entries)); }catch(e){}
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }catch(e){}
 }
 
 function buildEntry(){
-  // Emotions: use override or avg from logs; fill unregistered with 1
   const emotions={};
-  EMOTIONS.forEach(e=>{
-    const v=getFinal(e.key);
-    emotions[e.key] = v!==null ? v : 1;
-  });
-  // Comments
+  EMOTIONS.forEach(e=>{ const v=getFinal(e.key); emotions[e.key]=v!==null?v:1; });
   const comments={}, notesByEmo={};
   logs.forEach(l=>{ if(l.note){ (notesByEmo[l.emotion]=notesByEmo[l.emotion]||[]).push(l.note); } });
   Object.entries(notesByEmo).forEach(([k,arr])=>{ comments[k]=arr.join(' / '); });
   BEHAVIORS.forEach(b=>{ const el=document.getElementById('note-'+b.key); if(el&&el.value.trim()) comments[b.key]=el.value.trim(); });
-  return {
-    date:workDate, ts:new Date().toISOString(),
-    emotions, behaviors:{...behaviors},
-    strategies:{...strategies},
-    stratNotes:{...stratNotes},
-    comments, logs:[...logs]
-  };
+  return { date:workDate, ts:new Date().toISOString(), emotions, behaviors:{...behaviors}, strategies:{...strategies}, stratNotes:{...stratNotes}, comments, logs:[...logs] };
 }
 
 function autoSave(){
@@ -458,10 +434,7 @@ function loadDay(d){
     behaviors={...(ex.behaviors||{justin:0,alba:0})};
     strategies={...(ex.strategies||{})};
     stratNotes={...(ex.stratNotes||{})};
-    // If no logs but has emotion values, load as overrides (skip value=1 defaults)
-    if(!logs.length&&ex.emotions){
-      Object.entries(ex.emotions).forEach(([k,v])=>{ if(v>1) overrides[k]=v; });
-    }
+    if(!logs.length&&ex.emotions) Object.entries(ex.emotions).forEach(([k,v])=>{ if(v>1) overrides[k]=v; });
     BEHAVIORS.forEach(b=>{ const el=document.getElementById('note-'+b.key); if(el) el.value=ex.comments?.[b.key]||''; });
     showBanner(`Registro del ${fmtLong(d)} cargado — edítalo y vuelve a guardar.`);
   } else { hideBanner(); }
@@ -470,27 +443,17 @@ function loadDay(d){
   renderQuickGrid(); renderLogList(); renderStratList();
 }
 
-// ─── MIDNIGHT AUTO-FILL ───────────────────────────────────────────────────────
-function scheduleMidnightFill(){
-  const now=new Date();
-  const midnight=new Date(now); midnight.setHours(24,0,5,0);
-  const ms=midnight-now;
+// ─── MIDNIGHT FILL ────────────────────────────────────────────────────────────
+function scheduleMidnight(){
+  const now=new Date(), midnight=new Date(now);
+  midnight.setHours(24,0,5,0);
   setTimeout(()=>{
-    // Fill any missing emotions for today with value 1
     if(isToday()){
-      const todayEntry=entries.find(e=>e.date===workDate);
-      if(todayEntry){
-        EMOTIONS.forEach(em=>{
-          if(todayEntry.emotions[em.key]==null){
-            todayEntry.emotions[em.key]=1;
-            if(!todayEntry.comments[em.key]) todayEntry.comments[em.key]='No registrado este día';
-          }
-        });
-        persist();
-      }
+      const entry=entries.find(e=>e.date===workDate);
+      if(entry){ EMOTIONS.forEach(em=>{ if(!entry.emotions[em.key]){ entry.emotions[em.key]=1; if(!entry.comments) entry.comments={}; entry.comments[em.key]='No registrado este día'; } }); persist(); }
     }
-    scheduleMidnightFill(); // schedule next day
-  },ms);
+    scheduleMidnight();
+  }, midnight-now);
 }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
@@ -504,7 +467,7 @@ function switchTab(tab){
 }
 
 function switchSub(sub){
-  ['rapido','resumen','comportamiento','estrategias'].forEach((s,i)=>{
+  ['rapido','resumen','habitos','estrategias'].forEach((s,i)=>{
     document.querySelectorAll('.subtab')[i].classList.toggle('active',s===sub);
     document.getElementById('sub-'+s).classList.toggle('active',s===sub);
   });
@@ -516,10 +479,7 @@ function initDate(){
   const el=document.getElementById('working-date');
   el.value=workDate; el.max=dateStr(new Date()); updateDateBadge();
 }
-function onDateChange(){
-  workDate=document.getElementById('working-date').value;
-  updateDateBadge(); loadDay(workDate);
-}
+function onDateChange(){ workDate=document.getElementById('working-date').value; updateDateBadge(); loadDay(workDate); }
 function updateDateBadge(){
   const b=document.getElementById('date-badge');
   b.className=isToday()?'badge badge-today':'badge badge-past';
@@ -547,20 +507,18 @@ function renderIntPanel(){
   panel.style.display='block';
   panel.innerHTML=`<div class="int-panel">
     <div class="int-title">¿Con qué intensidad sientes <span style="color:${e.color}">${e.label}</span>?</div>
-    <div class="int-row">${[1,2,3,4,5].map(v=>`
-      <button class="int-btn${activeInt===v?' sel':''}" onclick="selectInt(${v})"
-        style="${activeInt===v?'background:'+e.dot+';color:white;':''}">${v}</button>`).join('')}
-    </div>
-    <textarea class="note-area" id="quick-note" placeholder="Nota opcional — ¿qué lo provocó?"></textarea>
+    <div class="int-row">${[1,2,3,4,5].map(v=>`<button class="int-btn${activeInt===v?' sel':''}" onclick="pickInt(${v})"
+      style="${activeInt===v?'background:'+e.dot+';color:white;':''}">${v}</button>`).join('')}</div>
+    <textarea class="ta" id="quick-note" placeholder="Nota opcional — ¿qué lo provocó?"></textarea>
     <div class="btn-row">
-      <button class="btn-confirm" style="background:${e.dot}" onclick="confirmEmo()">✓ Guardar</button>
-      <button class="btn-cancel" onclick="cancelInt()">Cancelar</button>
+      <button class="btn-ok" style="background:${e.dot}" onclick="confirmEmo()">✓ Guardar</button>
+      <button class="btn-no" onclick="cancelInt()">Cancelar</button>
     </div>
   </div>`;
   panel.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-function selectInt(v){ activeInt=v; renderIntPanel(); }
+function pickInt(v){ activeInt=v; renderIntPanel(); }
 
 function confirmEmo(){
   if(!activeInt){ alert('Selecciona una intensidad (1–5).'); return; }
@@ -568,8 +526,7 @@ function confirmEmo(){
   logs.push({emotion:activeEmo, intensity:activeInt, note, time:isToday()?fmtTime():fmtLong(workDate)});
   activeEmo=null; activeInt=null;
   document.getElementById('int-panel').style.display='none';
-  renderQuickGrid(); renderLogList();
-  autoSave();
+  renderQuickGrid(); renderLogList(); autoSave();
 }
 function cancelInt(){ activeEmo=null; activeInt=null; document.getElementById('int-panel').style.display='none'; }
 
@@ -580,12 +537,12 @@ function renderLogList(){
   document.getElementById('log-list').innerHTML=[...logs].reverse().map((l,ri)=>{
     const i=logs.length-1-ri, e=EMO[l.emotion];
     return `<div class="log-item">
-      <div class="log-dot" style="background:${e.dot}"></div>
-      <span class="log-time">${l.time}</span>
-      <span class="log-name">${e.label}</span>
-      <span class="log-int">${l.intensity}/5</span>
-      ${l.note?`<span class="log-note-text">${l.note}</span>`:''}
-      <span class="log-del" onclick="deleteLog(${i})">✕</span>
+      <div class="ldot" style="background:${e.dot}"></div>
+      <span class="ltime">${l.time}</span>
+      <span class="lname">${e.label}</span>
+      <span class="lint">${l.intensity}/5</span>
+      ${l.note?`<span class="lnote">${l.note}</span>`:''}
+      <span class="ldel" onclick="deleteLog(${i})">✕</span>
     </div>`;
   }).join('');
 }
@@ -593,10 +550,7 @@ function deleteLog(i){ logs.splice(i,1); renderQuickGrid(); renderLogList(); aut
 
 // ─── SUMMARY ──────────────────────────────────────────────────────────────────
 function getLogAvg(key){ return avgArr(logs.filter(l=>l.emotion===key).map(l=>l.intensity)); }
-function getFinal(key){
-  if(overrides[key]!=null) return overrides[key];
-  const a=getLogAvg(key); return a!=null?Math.round(a):null;
-}
+function getFinal(key){ if(overrides[key]!=null) return overrides[key]; const a=getLogAvg(key); return a!=null?Math.round(a):null; }
 
 function renderSummary(){
   document.getElementById('sum-justin').textContent=behaviors.justin||0;
@@ -644,71 +598,57 @@ function addAdj(key){ overrides[key]=1; renderSummary(); }
 
 // ─── BEHAVIORS ────────────────────────────────────────────────────────────────
 function tap(key){
-  behaviors[key]=(behaviors[key]||0)+1; refreshTapUI(key);
-  const b=document.getElementById('tapbtn-'+key); b.style.opacity='.6'; setTimeout(()=>b.style.opacity='1',150);
-  autoSave();
-  const flash=document.getElementById('flash-'+key);
-  if(flash){ flash.textContent='✓ Guardado'; setTimeout(()=>flash.textContent='',2000); }
+  behaviors[key]=(behaviors[key]||0)+1; refreshTapUI(key); autoSave();
+  const btn=document.getElementById('tapbtn-'+key);
+  if(btn){ btn.style.opacity='.6'; setTimeout(()=>btn.style.opacity='1',150); }
+  const f=document.getElementById('flash-'+key);
+  if(f){ f.textContent='✓ Guardado'; setTimeout(()=>f.textContent='',2000); }
 }
-function undoTap(key){
-  if(behaviors[key]>0){ behaviors[key]--; refreshTapUI(key); autoSave(); }
-}
+function undoTap(key){ if(behaviors[key]>0){ behaviors[key]--; refreshTapUI(key); autoSave(); } }
 function refreshTapUI(key){
   const n=behaviors[key]||0;
   document.getElementById('badge-'+key).textContent=n;
   document.getElementById('dots-'+key).innerHTML=Array.from({length:n},()=>`<div class="tap-dot dot-${key}"></div>`).join('');
 }
-function toggleNote(key){ const el=document.getElementById('note-'+key); el.style.display=el.style.display==='none'?'block':'none'; }
+function toggleTA(id){ const el=document.getElementById(id); el.style.display=el.style.display==='none'?'block':'none'; }
 
 // ─── STRATEGIES ───────────────────────────────────────────────────────────────
 function renderStratList(){
   document.getElementById('strat-list').innerHTML=STRATEGIES.map(s=>{
     const count=strategies[s.key]||0;
     const notes=stratNotes[s.key]||[];
-    const stepsHtml=s.steps.map(step=>`
+    const stepsHtml=s.steps.map(st=>`
       <div class="strat-step">
-        <div class="strat-letter" style="background:${s.color}">${step.letter}</div>
-        <div class="strat-step-text">
-          <span class="strat-step-title">${step.title}</span>
-          ${step.text}
-        </div>
+        <div class="strat-letter" style="background:${s.color}">${st.l}</div>
+        <div class="strat-step-text"><span class="strat-step-title">${st.title}</span>${st.text}</div>
       </div>`).join('');
-    const histHtml=notes.length?`<div style="margin-top:10px;margin-bottom:6px;">
-      ${notes.map((n,i)=>`<div class="log-item" style="margin-bottom:6px;">
-        <span class="log-time">${n.time}</span>
-        <span class="log-note-text" style="flex:1;font-style:normal">${n.text||'Sin nota'}</span>
-        <span class="log-del" onclick="deleteStratNote('${s.key}',${i})">✕</span>
-      </div>`).join('')}
-    </div>`:'';
+    const histHtml=notes.length?`<div style="margin:10px 0 6px">${notes.map((n,i)=>`
+      <div class="log-item" style="margin-bottom:6px">
+        <span class="ltime">${n.time}</span>
+        <span class="lnote" style="flex:1;font-style:normal;white-space:normal">${n.text||'Sin nota'}</span>
+        <span class="ldel" onclick="deleteStratNote('${s.key}',${i})">✕</span>
+      </div>`).join('')}</div>`:'';
     return `<div class="strat-card">
       <div class="strat-header" onclick="toggleStrat('${s.key}')">
         <div class="strat-left">
           <div class="strat-icon" style="background:${s.bg}">${s.icon}</div>
-          <div>
-            <div class="strat-name">${s.label}</div>
-            <div class="strat-tagline">${s.tagline}</div>
-          </div>
+          <div><div class="strat-name">${s.label}</div><div class="strat-tagline">${s.tagline}</div></div>
         </div>
-        <div class="strat-count-badge" style="color:${s.color}">${count>0?count:''}</div>
+        <div class="strat-count" style="color:${s.color}">${count>0?count:''}</div>
       </div>
       <div class="strat-body" id="strat-body-${s.key}">
-        <div class="strat-steps">${stepsHtml}</div>
-        <textarea class="note-area" id="strat-note-${s.key}" placeholder="Nota opcional — ¿cómo fue? ¿qué pasó?" style="margin-bottom:10px;"></textarea>
-        <button class="strat-tap-btn" style="background:${s.bg};color:${s.color}" onclick="tapStrat('${s.key}')">
-          ✓ Usé esta estrategia ahora
-        </button>
+        <div style="margin-bottom:14px">${stepsHtml}</div>
+        <textarea class="ta" id="strat-note-${s.key}" placeholder="Nota opcional — ¿cómo fue? ¿qué pasó?"></textarea>
+        <button class="strat-tap-btn" style="background:${s.bg};color:${s.color}" onclick="tapStrat('${s.key}')">✓ Usé esta estrategia ahora</button>
         ${histHtml}
         ${count>0?`<span class="strat-undo" onclick="undoStrat('${s.key}')">↩ Deshacer último</span>`:''}
-        <div class="autosave-flash" id="flash-strat-${s.key}" style="margin-top:6px"></div>
+        <div class="flash" id="flash-strat-${s.key}" style="margin-top:6px"></div>
       </div>
     </div>`;
   }).join('');
 }
 
-function toggleStrat(key){
-  const body=document.getElementById('strat-body-'+key);
-  body.classList.toggle('open');
-}
+function toggleStrat(key){ document.getElementById('strat-body-'+key).classList.toggle('open'); }
 
 function tapStrat(key){
   const noteEl=document.getElementById('strat-note-'+key);
@@ -716,16 +656,15 @@ function tapStrat(key){
   strategies[key]=(strategies[key]||0)+1;
   if(!stratNotes[key]) stratNotes[key]=[];
   stratNotes[key].push({time:isToday()?fmtTime():fmtLong(workDate), text:noteText});
-  autoSave();
-  renderStratList();
+  autoSave(); renderStratList();
   const body=document.getElementById('strat-body-'+key);
   if(body) body.classList.add('open');
-  const flash=document.getElementById('flash-strat-'+key);
-  if(flash){ flash.textContent='✓ Guardado'; setTimeout(()=>{ if(flash) flash.textContent=''; },2000); }
+  const f=document.getElementById('flash-strat-'+key);
+  if(f){ f.textContent='✓ Guardado'; setTimeout(()=>{ if(f) f.textContent=''; },2000); }
 }
 
 function undoStrat(key){
-  if(strategies[key]>0){
+  if((strategies[key]||0)>0){
     strategies[key]--;
     if(stratNotes[key]&&stratNotes[key].length>0) stratNotes[key].pop();
     autoSave(); renderStratList();
@@ -744,7 +683,7 @@ function deleteStratNote(key,i){
 // ─── HISTORIAL ────────────────────────────────────────────────────────────────
 function renderHistorial(){
   const el=document.getElementById('hist-content');
-  if(!entries.length){ el.innerHTML='<div class="empty">Aún no hay registros.<br>¡Empieza hoy!</div>'; return; }
+  if(!entries.length){ el.innerHTML='<div class="empty">Aún no hay registros.<br>¡Empieza hoy! 🌅</div>'; return; }
   el.innerHTML=entries.slice(0,60).map(e=>{
     const ds=new Date(e.date+'T12:00:00').toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
     let chips=EMOTIONS.filter(em=>e.emotions?.[em.key]&&e.emotions[em.key]>1)
@@ -764,10 +703,7 @@ function renderHistorial(){
     </div>`;
   }).join('');
 }
-function editEntry(d){
-  document.getElementById('working-date').value=d; workDate=d;
-  updateDateBadge(); loadDay(d); switchTab('registrar'); switchSub('rapido');
-}
+function editEntry(d){ document.getElementById('working-date').value=d; workDate=d; updateDateBadge(); loadDay(d); switchTab('registrar'); switchSub('rapido'); }
 
 // ─── STATS ────────────────────────────────────────────────────────────────────
 function calcStats(filtered){
@@ -796,14 +732,11 @@ function buildMail(from,to,filtered,forBev){
     ?`Hola Bev,%0A%0ATe comparto mi registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''} registrado${days!==1?'s':''}).%0A%0A`
     :`Hola,%0A%0AAquí tienes tu registro emocional del ${fmtLong(from)} al ${fmtLong(to)} (${days} día${days!==1?'s':''}).%0A%0A`;
   b+=`════════════════════════════%0ARESUMEN DEL PERÍODO%0A════════════════════════════%0A%0A`;
-  b+=`EMOCIONES (promedio · registros en el período)%0A────────────────────────────%0A`;
-  EMOTIONS.forEach(e=>{
-    const cnt=emoCounts[e.key];
-    b+=`  ${e.label.padEnd(16)} ${avg(emoVals[e.key])} / 5${cnt>0?`  (${cnt} registro${cnt>1?'s':''})`:''}%0A`;
-  });
-  b+=`%0ACOMPORTAMIENTOS (total)%0A────────────────────────────%0A`;
+  b+=`EMOCIONES (promedio · registros)%0A────────────────────────────%0A`;
+  EMOTIONS.forEach(e=>{ const c=emoCounts[e.key]; b+=`  ${e.label.padEnd(16)} ${avg(emoVals[e.key])} / 5${c>0?`  (${c} registro${c>1?'s':''})`:''}%0A`; });
+  b+=`%0ACOMPORTAMIENTOS%0A────────────────────────────%0A`;
   BEHAVIORS.forEach(beh=>{ b+=`  ${beh.label.padEnd(28)} ${totals[beh.key]}%0A`; });
-  b+=`%0AESTRATEGIAS USADAS (total)%0A────────────────────────────%0A`;
+  b+=`%0AESTRATEGIAS USADAS%0A────────────────────────────%0A`;
   STRATEGIES.forEach(s=>{ b+=`  ${s.label.padEnd(28)} ${stratTotals[s.key]}%0A`; });
   b+=`%0A%0A════════════════════════════%0ADETALLE DÍA A DÍA%0A════════════════════════════%0A%0A`;
   b+=`Fecha       | Grat | Orgu | Auto | Tris | Ansi | Culp | Enfa | Justin | Alba | TIPP | Mind | STOP | DEAR%0A`;
@@ -812,6 +745,8 @@ function buildMail(from,to,filtered,forBev){
     b+=`${fmtShort(e.date).padEnd(11)} | ${String(n(e.emotions?.gratitud)).padEnd(4)} | ${String(n(e.emotions?.orgullo)).padEnd(4)} | ${String(n(e.emotions?.autocompasion)).padEnd(4)} | ${String(n(e.emotions?.tristeza)).padEnd(4)} | ${String(n(e.emotions?.ansiedad)).padEnd(4)} | ${String(n(e.emotions?.culpa)).padEnd(4)} | ${String(n(e.emotions?.enfado)).padEnd(4)} | ${String(e.behaviors?.justin||0).padEnd(6)} | ${String(e.behaviors?.alba||0).padEnd(4)} | ${String(e.strategies?.tipp||0).padEnd(4)} | ${String(e.strategies?.mindfulness||0).padEnd(4)} | ${String(e.strategies?.stop||0).padEnd(4)} | ${e.strategies?.dearman||0}%0A`;
     const nl=Object.entries(e.comments||{}).filter(([,v])=>v&&v!=='No registrado este día').map(([k,v])=>`${cap(k)}: ${v}`);
     if(nl.length) b+=`  Notas: ${nl.join(' / ')}%0A`;
+    // Strategy notes
+    STRATEGIES.forEach(s=>{ const sn=e.stratNotes?.[s.key]; if(sn&&sn.length) b+=`  ${s.label}: ${sn.map(n=>n.text?`${n.time} — ${n.text}`:n.time).join('; ')}%0A`; });
   });
   b+=`%0A%0A${forBev?`Quedo a tu disposición para revisarlo en nuestra próxima sesión.%0A%0AUn abrazo,`:`Guardado para tu referencia.`}`;
   return b;
@@ -825,60 +760,6 @@ function openMail(who){
   const addr=who==='bev'?'admin@drbevwilliams.com':'jimena.martin@emory.edu';
   const subj=encodeURIComponent(`Registro emocional – ${fmtLong(from)} al ${fmtLong(to)}`);
   window.location.href=`mailto:${addr}?subject=${subj}&body=${buildMail(from,to,filtered,who==='bev')}`;
-}
-
-// ─── REPORT ───────────────────────────────────────────────────────────────────
-function renderReport(){
-  const from=document.getElementById('date-from').value, to=document.getElementById('date-to').value;
-  const filtered=entries.filter(e=>e.date>=from&&e.date<=to);
-  const el=document.getElementById('rpt-content');
-  if(!filtered.length){ el.innerHTML='<div class="empty">Sin datos en este rango.</div>'; return; }
-  const{totals,emoVals,emoCounts,stratTotals}=calcStats(filtered);
-  const avg=arr=>{ const a=avgArr(arr); return a!=null?a.toFixed(1):'—'; };
-  el.innerHTML=`
-    <div class="stat-grid">
-      <div class="stat-card"><div class="stat-val">${filtered.length}</div><div class="stat-lbl">Días registrados</div></div>
-      <div class="stat-card"><div class="stat-val">${totals.justin}</div><div class="stat-lbl">Disc. Justin</div></div>
-      <div class="stat-card"><div class="stat-val">${totals.alba}</div><div class="stat-lbl">Voz Alba</div></div>
-    </div>
-    <div class="stat-grid-emo">
-      ${EMOTIONS.map(e=>`<div class="stat-card">
-        <div class="stat-val" style="color:${e.dot}">${avg(emoVals[e.key])}</div>
-        <div class="stat-lbl">${e.label}</div>
-        ${emoCounts[e.key]>0?`<div class="stat-cnt">${emoCounts[e.key]} registro${emoCounts[e.key]>1?'s':''}</div>`:''}
-      </div>`).join('')}
-    </div>
-    <div class="section-label" style="margin-bottom:10px">Estrategias usadas</div>
-    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:16px">
-      ${STRATEGIES.map(s=>`<div class="stat-card">
-        <div class="stat-val" style="color:${s.color}">${stratTotals[s.key]}</div>
-        <div class="stat-lbl">${s.icon} ${s.label}</div>
-      </div>`).join('')}
-    </div>
-    <div class="legend">
-      ${EMOTIONS.map(e=>`<span><span class="legend-dot" style="background:${e.dot}"></span>${e.label}</span>`).join('')}
-      <span><span class="legend-dot" style="background:#AFA9EC"></span>Disc. Justin</span>
-      <span><span class="legend-dot" style="background:#F0997B"></span>Voz Alba</span>
-    </div>
-    <div class="chart-wrap"><canvas id="rpt-chart" role="img" aria-label="Evolución de emociones y comportamientos">Gráfico de evolución.</canvas></div>`;
-  const ordered=[...filtered].reverse();
-  const labels=ordered.map(e=>fmtShort(e.date));
-  const datasets=[
-    ...EMOTIONS.map(e=>({label:e.label,type:'line',data:ordered.map(en=>en.emotions?.[e.key]||null),borderColor:e.dot,backgroundColor:e.dot+'22',tension:.3,spanGaps:true,pointRadius:4,yAxisID:'y'})),
-    {label:'Disc. Justin',type:'bar',data:ordered.map(e=>e.behaviors?.justin||0),backgroundColor:'#AFA9EC',yAxisID:'y2'},
-    {label:'Voz Alba',type:'bar',data:ordered.map(e=>e.behaviors?.alba||0),backgroundColor:'#F0997B',yAxisID:'y2'},
-  ];
-  if(rptChart){ rptChart.destroy(); rptChart=null; }
-  rptChart=new Chart(document.getElementById('rpt-chart'),{
-    type:'bar',data:{labels,datasets},
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false}},
-      scales:{
-        y:{min:0,max:5,ticks:{stepSize:1},title:{display:true,text:'Intensidad'}},
-        y2:{position:'right',min:0,ticks:{stepSize:1},title:{display:true,text:'Veces'},grid:{drawOnChartArea:false}}
-      }
-    }
-  });
 }
 
 // ─── EXPORT / IMPORT ──────────────────────────────────────────────────────────
@@ -900,23 +781,73 @@ function importData(){
     reader.onload=ev=>{
       try{
         const imported=JSON.parse(ev.target.result);
-        if(!Array.isArray(imported)) throw new Error('Formato inválido');
-        // Merge: imported entries take priority over existing ones for same date
-        imported.forEach(imp=>{
-          const idx=entries.findIndex(en=>en.date===imp.date);
-          if(idx>=0) entries[idx]=imp; else entries.push(imp);
-        });
+        if(!Array.isArray(imported)) throw new Error();
+        imported.forEach(imp=>{ const idx=entries.findIndex(en=>en.date===imp.date); if(idx>=0) entries[idx]=imp; else entries.push(imp); });
         persist();
         alert(`✓ ${imported.length} registro${imported.length!==1?'s':''} importado${imported.length!==1?'s':''}. Reinicia la app para ver los cambios.`);
         loadDay(workDate); renderHistorial(); renderReport();
-      } catch(err){ alert('Error al importar: el archivo no es válido.'); }
+      } catch(e){ alert('Error: el archivo no es válido.'); }
     };
     reader.readAsText(file);
   };
   input.click();
 }
 
+// ─── REPORT ───────────────────────────────────────────────────────────────────
+function renderReport(){
+  const from=document.getElementById('date-from').value, to=document.getElementById('date-to').value;
+  const filtered=entries.filter(e=>e.date>=from&&e.date<=to);
+  const el=document.getElementById('rpt-content');
+  if(!filtered.length){ el.innerHTML='<div class="empty">Sin datos en este rango.</div>'; return; }
+  const{totals,emoVals,emoCounts,stratTotals}=calcStats(filtered);
+  const avg=arr=>{ const a=avgArr(arr); return a!=null?a.toFixed(1):'—'; };
+  el.innerHTML=`
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val">${filtered.length}</div><div class="stat-lbl">Días registrados</div></div>
+      <div class="stat-card"><div class="stat-val">${totals.justin}</div><div class="stat-lbl">Disc. Justin</div></div>
+      <div class="stat-card"><div class="stat-val">${totals.alba}</div><div class="stat-lbl">Voz Alba</div></div>
+    </div>
+    <div class="stat-grid-2">
+      ${EMOTIONS.map(e=>`<div class="stat-card">
+        <div class="stat-val" style="color:${e.dot}">${avg(emoVals[e.key])}</div>
+        <div class="stat-lbl">${e.label}</div>
+        ${emoCounts[e.key]>0?`<div class="stat-cnt">${emoCounts[e.key]} registro${emoCounts[e.key]>1?'s':''}</div>`:''}
+      </div>`).join('')}
+    </div>
+    <div class="section-label" style="margin-bottom:10px">Estrategias usadas</div>
+    <div class="stat-grid-2" style="margin-bottom:16px">
+      ${STRATEGIES.map(s=>`<div class="stat-card">
+        <div class="stat-val" style="color:${s.color}">${stratTotals[s.key]}</div>
+        <div class="stat-lbl">${s.icon} ${s.label}</div>
+      </div>`).join('')}
+    </div>
+    <div class="legend">
+      ${EMOTIONS.map(e=>`<span><span class="ldot-sq" style="background:${e.dot}"></span>${e.label}</span>`).join('')}
+      <span><span class="ldot-sq" style="background:#AFA9EC"></span>Disc. Justin</span>
+      <span><span class="ldot-sq" style="background:#F0997B"></span>Voz Alba</span>
+    </div>
+    <div class="chart-wrap"><canvas id="rpt-chart" role="img" aria-label="Evolución emocional">Gráfico de evolución.</canvas></div>`;
+  const ordered=[...filtered].reverse();
+  const labels=ordered.map(e=>fmtShort(e.date));
+  const datasets=[
+    ...EMOTIONS.map(e=>({label:e.label,type:'line',data:ordered.map(en=>en.emotions?.[e.key]||null),borderColor:e.dot,backgroundColor:e.dot+'22',tension:.3,spanGaps:true,pointRadius:4,yAxisID:'y'})),
+    {label:'Disc. Justin',type:'bar',data:ordered.map(e=>e.behaviors?.justin||0),backgroundColor:'#AFA9EC',yAxisID:'y2'},
+    {label:'Voz Alba',type:'bar',data:ordered.map(e=>e.behaviors?.alba||0),backgroundColor:'#F0997B',yAxisID:'y2'},
+  ];
+  if(rptChart){ rptChart.destroy(); rptChart=null; }
+  rptChart=new Chart(document.getElementById('rpt-chart'),{
+    type:'bar', data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{min:0,max:5,ticks:{stepSize:1},title:{display:true,text:'Intensidad'}},
+        y2:{position:'right',min:0,ticks:{stepSize:1},title:{display:true,text:'Veces'},grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+}
 
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 function init(){
   initDate();
   loadDay(workDate);
@@ -924,7 +855,7 @@ function init(){
   document.getElementById('date-from').value=dateStr(d7);
   document.getElementById('date-to').value=dateStr(today);
   renderReport();
-  scheduleMidnightFill();
+  scheduleMidnight();
 }
 
 init();
